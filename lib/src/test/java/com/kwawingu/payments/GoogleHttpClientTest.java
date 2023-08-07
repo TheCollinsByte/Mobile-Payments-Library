@@ -4,11 +4,16 @@
 package com.kwawingu.payments;
 
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GoogleHttpClientTest {
     @Test
-    public void testGetGoogleStatusCode() {
-
+    public void testGetGoogleStatusCode() throws IOException {
+        GoogleHttpClient googleHttpClient = new GoogleHttpClient();
+        int statusCode = googleHttpClient.getGoogleStatusCode();
+        assertEquals(200, statusCode, "Expected status code 200");
     }
 }
