@@ -3,9 +3,20 @@
  */
 package com.kwawingu.payments;
 
-public class GoogleHttpClient {
-    public int getGoogleStatusCode() {
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-        return 0;
+public class GoogleHttpClient {
+    public int getGoogleStatusCode() throws IOException {
+        URL url = new URL("https://google.com");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        int statusCode = connection.getResponseCode();
+        connection.disconnect();
+
+        return statusCode;
     }
 }
