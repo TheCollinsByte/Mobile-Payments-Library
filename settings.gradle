@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'payments'
-include('lib')
+include('payment-core')
