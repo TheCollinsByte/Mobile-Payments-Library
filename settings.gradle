@@ -1,2 +1,3 @@
 rootProject.name = 'payments'
 include('payment-core')
+include('payment-gateways')
