@@ -1,4 +1,7 @@
-package com.kwawingu.payments;
+package com.kwawingu.payments.mpesa;
+
+import com.kwawingu.payments.PaymentGateway;
+import com.kwawingu.payments.PaymentTransaction;
 
 public class MpesaPaymentGateway implements PaymentGateway {
     public String apiKey;

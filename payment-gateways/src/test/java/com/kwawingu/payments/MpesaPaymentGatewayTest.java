@@ -1,9 +1,9 @@
 package com.kwawingu.payments;
 
+import com.kwawingu.payments.mpesa.MpesaPaymentGateway;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MpesaPaymentGatewayTest {
     private MpesaPaymentGateway gateway;
@@ -18,10 +18,10 @@ public class MpesaPaymentGatewayTest {
     public void testSubmitPaymentSuccess() {
         PaymentTransaction transaction = gateway.submitPayment(1000, "TZS", "phone number");
 
-        assertNotNull(transaction);
-        assertTrue(transaction.isSuccess());
-        assertEquals("mock_transaction_id", transaction.getTransactionId());
-        assertEquals(1000, transaction.getAmount());
-        assertEquals("TZS", transaction.getCurrency());
+        Assertions.assertNotNull(transaction);
+        Assertions.assertTrue(transaction.isSuccess());
+        Assertions.assertEquals("mock_transaction_id", transaction.getTransactionId());
+        Assertions.assertEquals(1000, transaction.getAmount());
+        Assertions.assertEquals("TZS", transaction.getCurrency());
     }
 }
