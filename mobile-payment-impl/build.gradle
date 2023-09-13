@@ -9,8 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(':payment-core')
-
+    implementation project(':mobile-payment-api')
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 }
