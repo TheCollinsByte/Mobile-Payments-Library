@@ -11,7 +11,8 @@ repositories {
 dependencies {
     implementation project(':mobile-payment-api')
     // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
 }
 
 tasks.named('test') {
