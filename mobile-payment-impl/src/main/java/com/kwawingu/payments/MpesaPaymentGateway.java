@@ -1,4 +1,4 @@
-package com.kwawingu.payments.mpesa;
+package com.kwawingu.payments;
 
 import com.kwawingu.payments.PaymentGateway;
 import com.kwawingu.payments.PaymentTransaction;

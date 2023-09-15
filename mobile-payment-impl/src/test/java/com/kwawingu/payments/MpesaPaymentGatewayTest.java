@@ -1,6 +1,5 @@
 package com.kwawingu.payments;
 
-import com.kwawingu.payments.mpesa.MpesaPaymentGateway;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
