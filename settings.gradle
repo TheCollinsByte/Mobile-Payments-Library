@@ -1,3 +1,3 @@
 rootProject.name = 'kwawingu-mobile-payments'
 include('mobile-payment-api')
-include('mobile-payment-impl')
+include('mpesa-mobile-payment-impl')
