@@ -9,18 +9,11 @@ public class MpesaPaymentGatewayTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialize the gateway with a mock API key
-        gateway = new MpesaPaymentGateway("mock-api-key");
+
     }
 
     @Test
-    public void testSubmitPaymentSuccess() {
-        PaymentTransaction transaction = gateway.submitPayment(1000, "TZS", "phone number");
+    public void testGetting() {
 
-        Assertions.assertNotNull(transaction);
-        Assertions.assertTrue(transaction.isSuccess());
-        Assertions.assertEquals("mock_transaction_id", transaction.getTransactionId());
-        Assertions.assertEquals(1000, transaction.getAmount());
-        Assertions.assertEquals("TZS", transaction.getCurrency());
     }
 }

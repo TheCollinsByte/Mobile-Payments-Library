@@ -1,28 +1,41 @@
 package com.kwawingu.payments;
 
-import com.kwawingu.payments.PaymentGateway;
-import com.kwawingu.payments.PaymentTransaction;
 
-public class MpesaPaymentGateway implements PaymentGateway {
-    public String apiKey;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
-    public MpesaPaymentGateway(String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class MpesaPaymentGateway implements MobilePayment {
 
     @Override
-    public PaymentTransaction submitPayment(double amount, String currency, String paymentMethod) {
+    public String SessionKey(String publicKey, String apiKey) {
+        String getPublicKeyBase64 = System.getenv("MPESA_PUBLIC_KEY");
+        String getApiKeyToEncrypt = System.getenv("MPESA_API_KEY");
 
-        boolean isSuccess = true;   // We Assume payment is successful
-        String transactionId = "mock_transaction_id";   // We Assume payment is successful
+        if (getPublicKeyBase64 == null || getApiKeyToEncrypt ==null) {
+            System.err.println("Missing environment variables. Please set MPESA_PUBLIC_KEY and MPESA_API_KEY");
+            System.exit(1);
+        }
 
+        byte[] publicKeyBytes = Base64.getDecoder().decode(getPublicKeyBase64);
 
-        PaymentTransaction transaction = new PaymentTransaction();
-        transaction.setTransactionId(transactionId);
-        transaction.setAmount(amount);
-        transaction.setCurrency(currency);
-        transaction.setSuccess(isSuccess);
-
-        return transaction;
+        try {
+            PublicKey pubKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
+            Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            rsaCipher.init(Cipher.ENCRYPT_MODE, pubKey);
+            byte[] encryptedBytes = rsaCipher.doFinal(getApiKeyToEncrypt.getBytes());
+            return Base64.getEncoder().encodeToString(encryptedBytes);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException |
+                 IllegalBlockSizeException | BadPaddingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
