@@ -11,8 +11,10 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MpesaConfigTest {
     private MpesaConfig mpesaConfig;
@@ -39,7 +41,7 @@ public class MpesaConfigTest {
         String encryptedSessionKey = mpesaConfig.SessionKey();
         assertNotNull(encryptedSessionKey);
 
-        String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/c2bPayment/singleStage";
+        String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -54,11 +56,21 @@ public class MpesaConfigTest {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() != 200) {
+        if (response.statusCode() != 200 && response.statusCode() != 400) {
             throw new IOException("Unexpected HTTP Code: " + response.statusCode());
         }
-        String responseBody = response.body();
-        assertFalse(responseBody.isEmpty());
+
+        if (response.statusCode() == 200) {
+            String responseBody = response.body();
+            String[] apiResponse = responseBody.split(",");
+
+            assertEquals("{\"output_ResponseCode\":\"INS-0\"", apiResponse[0]);
+            assertEquals("\"output_ResponseDesc\":\"Request processed successfully\"", apiResponse[1]);
+        }
+
+        if (response.statusCode() == 400) {
+            throw new IOException("Session Creation Failed: " + response.statusCode());
+        }
     }
 
     @Test
