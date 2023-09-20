@@ -24,7 +24,7 @@ public class MpesaConfig implements MobilePayment {
     }
 
     @Override
-    public String SessionKey() {
+    public String GenerateAnEncryptApiKey() {
 
         byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
 

@@ -37,8 +37,8 @@ public class MpesaConfigTest {
      * Apart from checking for Null, Needs to implement decryption logic to validate the session key.
      */
     @Test
-    public void testSessionKeyEncryptionAndDecryption() throws IOException, InterruptedException {
-        String encryptedSessionKey = mpesaConfig.SessionKey();
+    public void testGetASessionKey() throws IOException, InterruptedException {
+        String encryptedSessionKey = mpesaConfig.GenerateAnEncryptApiKey();
         assertNotNull(encryptedSessionKey);
 
         String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
