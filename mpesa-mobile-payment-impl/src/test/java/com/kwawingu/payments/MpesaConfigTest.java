@@ -28,6 +28,7 @@ public class MpesaConfigTest {
         }
 
         mpesaConfig = new MpesaConfig(publicKey, apiKey);
+        httpClient = HttpClient.newHttpClient();
     }
 
     /**
