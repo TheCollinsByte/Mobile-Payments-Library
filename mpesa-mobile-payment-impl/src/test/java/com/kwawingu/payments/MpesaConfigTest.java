@@ -38,7 +38,7 @@ public class MpesaConfigTest {
      */
     @Test
     public void testGetASessionKey() throws IOException, InterruptedException {
-        String encryptedSessionKey = mpesaConfig.GenerateAnEncryptApiKey();
+        String encryptedSessionKey = mpesaConfig.generateAnEncryptApiKey();
         assertNotNull(encryptedSessionKey);
 
         String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
