@@ -74,6 +74,22 @@ public class MpesaConfigTest {
     }
 
     @Test
+    public void testGetClientGetSessionKey() {
+        String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
+        String encryptApiKey = mpesaConfig.generateAnEncryptApiKey();
+        String session = null;
+        assertNotNull(encryptApiKey);
+
+        try {
+            session = mpesaConfig.getSessionKey(encryptApiKey, context);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        assertNotNull(session);
+    }
+
+    @Test
     public void testInvalidPublicKey() {
 
     }
