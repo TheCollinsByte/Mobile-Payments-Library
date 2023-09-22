@@ -5,6 +5,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -12,15 +17,19 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MpesaConfig implements MobilePayment {
 
     private final String publicKey;
     private final String apiKey;
+    private final HttpClient httpClient;
 
     public MpesaConfig(String publicKey, String apiKey) {
         this.publicKey = publicKey;
         this.apiKey = apiKey;
+        httpClient = HttpClient.newHttpClient();
     }
 
     @Override
@@ -38,5 +47,46 @@ public class MpesaConfig implements MobilePayment {
                  IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String getSessionKey(String encryptedApiKey, String context) throws IOException {
+        HttpResponse<String> response;
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + encryptedApiKey);
+        headers.put("Origin", "*");
+
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                .uri(URI.create(context))
+                .GET();
+        headers.forEach(requestBuilder::headers);
+        HttpRequest request = requestBuilder.build();
+
+        try {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (response.statusCode() != 200 && response.statusCode() != 400) {
+            throw new IOException("Unexpected HTTP Code: " + response.statusCode());
+        }
+
+        if (response.statusCode() == 400) {
+            throw new IOException("Session Creation Failed: " + response.statusCode());
+        }
+
+        if (response.statusCode() == 200) {
+            String responseBody = response.body();
+            String[] apiResponse = responseBody.split(",");
+            if (apiResponse[2].contains("output_SessionID")){
+                String[] session = apiResponse[2].split(":");
+                return session[1];
+            }
+        }
+
+        return null;
     }
 }
