@@ -15,7 +15,7 @@ dependencies {
     testImplementation libs.junit.jupiter.engine
 }
 
-tasks.named('test') {
+test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
     testLogging {
