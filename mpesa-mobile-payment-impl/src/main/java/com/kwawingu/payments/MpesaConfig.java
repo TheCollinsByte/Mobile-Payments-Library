@@ -60,14 +60,7 @@ public class MpesaConfig implements MobilePayment {
 
         HttpRequest request = buildSessionRequest(encryptedApiKey, context);
         response = sendSessionRequest(request);
-
-        if (response.statusCode() != 200 && response.statusCode() != 400) {
-            throw new IOException("Unexpected HTTP Code: " + response.statusCode());
-        }
-
-        if (response.statusCode() == 400) {
-            throw new IOException("Session Creation Failed: " + response.statusCode());
-        }
+        handleSessionResponse(response);
 
         if (response.statusCode() == 200) {
             String responseBody = response.body();
@@ -101,6 +94,18 @@ public class MpesaConfig implements MobilePayment {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void handleSessionResponse(HttpResponse<String> response) throws IOException {
+        int statusCode = response.statusCode();
+
+        if (statusCode != 200 && statusCode != 400) {
+            throw new IOException("Unexpected HTTP Code" + statusCode);
+        }
+
+        if (statusCode == 400) {
+            throw new IOException("Session Creation Failed: " + statusCode);
         }
     }
 }
