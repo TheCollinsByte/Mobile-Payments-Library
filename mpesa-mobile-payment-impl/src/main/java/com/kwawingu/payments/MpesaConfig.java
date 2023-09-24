@@ -57,13 +57,9 @@ public class MpesaConfig implements MobilePayment {
     @Override
     public String getSessionKey(String encryptedApiKey, String context) throws IOException {
         HttpResponse<String> response;
-        HttpRequest request = buildSessionRequest(encryptedApiKey, context);
 
-        try {
-            response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        HttpRequest request = buildSessionRequest(encryptedApiKey, context);
+        response = sendSessionRequest(request);
 
         if (response.statusCode() != 200 && response.statusCode() != 400) {
             throw new IOException("Unexpected HTTP Code: " + response.statusCode());
@@ -98,5 +94,13 @@ public class MpesaConfig implements MobilePayment {
         headers.forEach(requestBuilder::headers);
 
         return requestBuilder.build();
+    }
+
+    private HttpResponse<String> sendSessionRequest(HttpRequest request) {
+        try {
+            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
