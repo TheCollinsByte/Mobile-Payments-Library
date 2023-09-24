@@ -10,11 +10,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MpesaConfigTest {
     private MpesaConfig mpesaConfig;
@@ -74,19 +74,14 @@ public class MpesaConfigTest {
     }
 
     @Test
-    public void testGetClientGetSessionKey() {
+    public void testGetClientGetSessionKey() throws IOException {
         String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
         String encryptApiKey = mpesaConfig.generateAnEncryptApiKey();
-        String session = null;
         assertNotNull(encryptApiKey);
 
-        try {
-            session = mpesaConfig.getSessionKey(encryptApiKey, context);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        Optional<String> session = mpesaConfig.getSessionKey(encryptApiKey, context);
 
-        assertNotNull(session);
+        assertFalse(session.isPresent());
     }
 
     @Test

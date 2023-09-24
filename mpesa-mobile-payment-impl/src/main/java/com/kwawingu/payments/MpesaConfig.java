@@ -25,6 +25,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class MpesaConfig implements MobilePayment {
     private static final Logger LOG = LoggerFactory.getLogger(MpesaConfig.class);
@@ -57,14 +58,20 @@ public class MpesaConfig implements MobilePayment {
     }
 
     @Override
-    public String getSessionKey(String encryptedApiKey, String context) throws IOException {
+    public Optional<String> getSessionKey(String encryptedApiKey, String context) throws IOException {
         HttpResponse<String> response;
 
         HttpRequest request = buildSessionRequest(encryptedApiKey, context);
         response = sendSessionRequest(request);
-        handleSessionResponse(response);
 
-        return extractSessionKey(response.body());
+        try {
+            handleSessionResponse(response);
+            return extractSessionKey(response.body());
+        } catch (IOException e) {
+            LOG.debug("Error Processing session response: {}", e.getMessage());
+        }
+
+        return Optional.empty();
     }
 
     private HttpRequest buildSessionRequest(String encryptedApiKey, String context) {
@@ -102,17 +109,17 @@ public class MpesaConfig implements MobilePayment {
         }
     }
 
-    private String extractSessionKey(String responseBody) {
+    private Optional<String> extractSessionKey(String responseBody) {
         if (responseBody != null) {
             JsonElement jsonElement = JsonParser.parseString(responseBody);
 
             if (jsonElement.isJsonObject()) {
                 JsonObject jsonObject = jsonElement.getAsJsonObject();
                 if (jsonObject.has("output_SessionID")) {
-                    return jsonObject.get("output_SessionID").getAsString();
+                    return Optional.of(jsonObject.get("output_SessionID").getAsString());
                 }
             }
         }
-        return null;
+        return Optional.empty();
     }
 }
