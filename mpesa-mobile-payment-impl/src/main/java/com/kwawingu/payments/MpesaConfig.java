@@ -1,6 +1,7 @@
 package com.kwawingu.payments;
 
 
+import com.sun.net.httpserver.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,17 +57,7 @@ public class MpesaConfig implements MobilePayment {
     @Override
     public String getSessionKey(String encryptedApiKey, String context) throws IOException {
         HttpResponse<String> response;
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + encryptedApiKey);
-        headers.put("Origin", "*");
-
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(context))
-                .GET();
-        headers.forEach(requestBuilder::headers);
-        HttpRequest request = requestBuilder.build();
+        HttpRequest request = buildSessionRequest(encryptedApiKey, context);
 
         try {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -92,5 +83,20 @@ public class MpesaConfig implements MobilePayment {
         }
 
         return null;
+    }
+
+    private HttpRequest buildSessionRequest(String encryptedApiKey, String context) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Bearer " + encryptedApiKey);
+        headers.put("Origin", "*");
+
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                .uri(URI.create(context))
+                .GET();
+
+        headers.forEach(requestBuilder::headers);
+
+        return requestBuilder.build();
     }
 }
