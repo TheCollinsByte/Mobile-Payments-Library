@@ -1,6 +1,9 @@
 package com.kwawingu.payments;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -21,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MpesaConfig implements MobilePayment {
+    private static final Logger LOG = LoggerFactory.getLogger(MpesaConfig.class);
 
     private final String publicKey;
     private final String apiKey;
