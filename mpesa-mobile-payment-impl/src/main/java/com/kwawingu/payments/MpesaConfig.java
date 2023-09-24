@@ -1,7 +1,9 @@
 package com.kwawingu.payments;
 
 
-import com.sun.net.httpserver.Headers;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,15 +104,15 @@ public class MpesaConfig implements MobilePayment {
 
     private String extractSessionKey(String responseBody) {
         if (responseBody != null) {
-            String[] parsedString = responseBody.split(",");
-            for (String responsePart: parsedString) {
-                if (responsePart.contains("output_SessionID")) {
-                    String[] session = responsePart.split(":");
-                    return session[1].trim();
+            JsonElement jsonElement = JsonParser.parseString(responseBody);
+
+            if (jsonElement.isJsonObject()) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                if (jsonObject.has("output_SessionID")) {
+                    return jsonObject.get("output_SessionID").getAsString();
                 }
             }
         }
-
         return null;
     }
 }
