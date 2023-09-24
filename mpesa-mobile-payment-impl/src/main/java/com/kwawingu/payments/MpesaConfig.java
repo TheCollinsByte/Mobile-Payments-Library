@@ -62,16 +62,7 @@ public class MpesaConfig implements MobilePayment {
         response = sendSessionRequest(request);
         handleSessionResponse(response);
 
-        if (response.statusCode() == 200) {
-            String responseBody = response.body();
-            String[] apiResponse = responseBody.split(",");
-            if (apiResponse[2].contains("output_SessionID")){
-                String[] session = apiResponse[2].split(":");
-                return session[1];
-            }
-        }
-
-        return null;
+        return extractSessionKey(response.body());
     }
 
     private HttpRequest buildSessionRequest(String encryptedApiKey, String context) {
@@ -107,5 +98,19 @@ public class MpesaConfig implements MobilePayment {
         if (statusCode == 400) {
             throw new IOException("Session Creation Failed: " + statusCode);
         }
+    }
+
+    private String extractSessionKey(String responseBody) {
+        if (responseBody != null) {
+            String[] parsedString = responseBody.split(",");
+            for (String responsePart: parsedString) {
+                if (responsePart.contains("output_SessionID")) {
+                    String[] session = responsePart.split(":");
+                    return session[1].trim();
+                }
+            }
+        }
+
+        return null;
     }
 }
