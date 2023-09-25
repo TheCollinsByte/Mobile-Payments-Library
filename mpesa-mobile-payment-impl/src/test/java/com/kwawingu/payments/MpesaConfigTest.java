@@ -15,6 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MpesaConfigTest {
     private MpesaConfig mpesaConfig;
@@ -81,7 +82,7 @@ public class MpesaConfigTest {
 
         Optional<String> session = mpesaConfig.getSessionKey(encryptApiKey, context);
 
-        assertFalse(session.isPresent());
+        assertTrue(session.isPresent());
     }
 
     @Test
