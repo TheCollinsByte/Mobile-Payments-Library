@@ -13,6 +13,7 @@ public class SessionKeyTest {
 
     private SessionKey mpesaSessionKey;
     private EncryptApiKey encryptApiKey;
+    private ApiEndpoint apiEndpoint;
 
     @BeforeEach
     public void setUp() {
@@ -25,11 +26,14 @@ public class SessionKeyTest {
 
         mpesaSessionKey = new SessionKey();
         encryptApiKey = new EncryptApiKey(publicKey, apiKey);
+        Market vodacomTZN = Market.VODACOM_TANZANIA;
+        Environment sandboxEnv = Environment.SANDBOX;
+        apiEndpoint = new ApiEndpoint(sandboxEnv, vodacomTZN);
     }
 
     @Test
     public void testClientGetSessionKey() throws IOException {
-        String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
+        String context = apiEndpoint.getUrl(Service.GET_SESSION);
         String encryptApiKey = this.encryptApiKey.generateAnEncryptApiKey();
         assertNotNull(encryptApiKey);
 
