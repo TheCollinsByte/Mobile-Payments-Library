@@ -9,11 +9,12 @@ public class ApiEndpoint {
         this.market = market;
     }
 
-    public String getUrl() {
+    public String getUrl(Service service) {
         return (environment.isSsl() ? "https://" : "http://") +
                 environment.getHost() + "/" +
                 environment.getName().toLowerCase() +
                 "/ipg/v2/" +
-                market.getContextValue();
+                market.getContextValue() +
+                service.getPath();
     }
 }
