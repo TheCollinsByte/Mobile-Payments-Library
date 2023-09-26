@@ -10,14 +10,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MpesaConfigTest {
-    private MpesaConfig mpesaConfig;
+public class EncryptApiKeyTest {
+    private EncryptApiKey encryptApiKey;
     private HttpClient httpClient;
 
     @BeforeEach
@@ -29,7 +27,7 @@ public class MpesaConfigTest {
             throw new RuntimeException("Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
         }
 
-        mpesaConfig = new MpesaConfig(publicKey, apiKey);
+        encryptApiKey = new EncryptApiKey(publicKey, apiKey);
         httpClient = HttpClient.newHttpClient();
     }
 
@@ -38,7 +36,7 @@ public class MpesaConfigTest {
      */
     @Test
     public void testGetASessionKey() throws IOException, InterruptedException {
-        String encryptedSessionKey = mpesaConfig.generateAnEncryptApiKey();
+        String encryptedSessionKey = encryptApiKey.generateAnEncryptApiKey();
         assertNotNull(encryptedSessionKey);
 
         String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";

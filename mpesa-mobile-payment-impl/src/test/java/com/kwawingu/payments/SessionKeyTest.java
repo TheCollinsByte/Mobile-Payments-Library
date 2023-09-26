@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SessionKeyTest {
 
     private SessionKey mpesaSessionKey;
-    private MpesaConfig mpesaConfig;
+    private EncryptApiKey encryptApiKey;
 
     @BeforeEach
     public void setUp() {
@@ -24,13 +24,13 @@ public class SessionKeyTest {
         }
 
         mpesaSessionKey = new SessionKey();
-        mpesaConfig = new MpesaConfig(publicKey, apiKey);
+        encryptApiKey = new EncryptApiKey(publicKey, apiKey);
     }
 
     @Test
     public void testClientGetSessionKey() throws IOException {
         String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
-        String encryptApiKey = mpesaConfig.generateAnEncryptApiKey();
+        String encryptApiKey = this.encryptApiKey.generateAnEncryptApiKey();
         assertNotNull(encryptApiKey);
 
         Optional<String> session = mpesaSessionKey.getSessionKey(encryptApiKey, context);
