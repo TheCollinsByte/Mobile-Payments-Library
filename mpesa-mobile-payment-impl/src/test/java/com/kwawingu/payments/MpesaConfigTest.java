@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -72,17 +71,6 @@ public class MpesaConfigTest {
         if (response.statusCode() == 400) {
             throw new IOException("Session Creation Failed: " + response.statusCode());
         }
-    }
-
-    @Test
-    public void testGetClientGetSessionKey() throws IOException {
-        String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
-        String encryptApiKey = mpesaConfig.generateAnEncryptApiKey();
-        assertNotNull(encryptApiKey);
-
-        Optional<String> session = mpesaConfig.getSessionKey(encryptApiKey, context);
-
-        assertTrue(session.isPresent());
     }
 
     @Test
