@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EncryptApiKeyTest {
     private EncryptApiKey encryptApiKey;
     private HttpClient httpClient;
+    private ApiEndpoint apiEndpoint;
 
     @BeforeEach
     public void setUp() {
@@ -29,6 +30,9 @@ public class EncryptApiKeyTest {
 
         encryptApiKey = new EncryptApiKey(publicKey, apiKey);
         httpClient = HttpClient.newHttpClient();
+        Market vodacomTZN = Market.VODACOM_TANZANIA;
+        Environment sandboxEnv = Environment.SANDBOX;
+        apiEndpoint = new ApiEndpoint(sandboxEnv, vodacomTZN);
     }
 
     /**
@@ -39,7 +43,7 @@ public class EncryptApiKeyTest {
         String encryptedSessionKey = encryptApiKey.generateAnEncryptApiKey();
         assertNotNull(encryptedSessionKey);
 
-        String context = "https://openapi.m-pesa.com/sandbox/ipg/v2/vodacomTZN/getSession/";
+        String context = apiEndpoint.getUrl(Service.GET_SESSION);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
