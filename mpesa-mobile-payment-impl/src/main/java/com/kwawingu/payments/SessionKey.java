@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class SessionKey implements MobilePayment {
+public class SessionKey {
 
     private static final Logger LOG = LoggerFactory.getLogger(SessionKey.class);
 
@@ -23,11 +23,6 @@ public class SessionKey implements MobilePayment {
 
     public SessionKey() {
         httpClient = HttpClient.newHttpClient();
-    }
-
-    @Override
-    public String generateAnEncryptApiKey() {
-        return null;
     }
 
     private HttpRequest buildSessionRequest(String encryptedApiKey, String context) {
@@ -79,8 +74,7 @@ public class SessionKey implements MobilePayment {
         return Optional.empty();
     }
 
-    @Override
-    public Optional<String> getSessionKey(String encryptedApiKey, String context) throws IOException {
+    public Optional<String> getSessionKey(String encryptedApiKey, String context) {
         HttpResponse<String> response;
 
         HttpRequest request = buildSessionRequest(encryptedApiKey, context);

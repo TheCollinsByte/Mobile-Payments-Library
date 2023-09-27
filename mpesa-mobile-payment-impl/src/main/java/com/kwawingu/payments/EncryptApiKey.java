@@ -18,7 +18,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Optional;
 
-public class EncryptApiKey implements MobilePayment {
+public class EncryptApiKey {
     private static final Logger LOG = LoggerFactory.getLogger(EncryptApiKey.class);
     private final String publicKey;
     private final String apiKey;
@@ -28,7 +28,6 @@ public class EncryptApiKey implements MobilePayment {
         this.apiKey = apiKey;
     }
 
-    @Override
     public String generateAnEncryptApiKey() {
 
         byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
@@ -43,10 +42,5 @@ public class EncryptApiKey implements MobilePayment {
                  IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Optional<String> getSessionKey(String encryptedApiKey, String context) throws IOException {
-        return Optional.empty();
     }
 }
