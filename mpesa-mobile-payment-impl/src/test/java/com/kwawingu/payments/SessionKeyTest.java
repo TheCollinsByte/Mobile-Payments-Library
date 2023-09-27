@@ -41,4 +41,19 @@ public class SessionKeyTest {
 
         assertTrue(session.isPresent());
     }
+
+    @Test
+    public void testGetSessionKey_SuccessfulResponse() {
+
+    }
+
+    @Test
+    public void testGetSessionKey_ErrorResponse() {
+
+    }
+
+    @Test
+    public void testGetSessionKey_Exception() {
+
+    }
 }
