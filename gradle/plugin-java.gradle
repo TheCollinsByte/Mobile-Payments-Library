@@ -18,6 +18,37 @@ if (spotlessEnabled) {
     }
 }
 
+def checkerFrameworkEnabled = Boolean.getBoolean('build.checker')
+if (checkerFrameworkEnabled) {
+    apply plugin: "org.checkerframework"
+    dependencies {
+        checkerFramework libs.checker
+        implementation libs.checker.qual
+    }
+    checkerFramework {
+        excludeTests = true
+        // incrementalize = false
+        checkers = [
+                'org.checkerframework.checker.nullness.NullnessChecker',
+                // 'org.checkerframework.checker.lock.LockChecker',
+                'org.checkerframework.checker.optional.OptionalChecker',
+                'org.checkerframework.checker.signedness.SignednessChecker',
+                // 'org.checkerframework.checker.interning.InterningChecker',
+                // 'org.checkerframework.checker.resourceleak.ResourceLeakChecker',
+                // others at https://checkerframework.org/manual
+        ]
+        extraJavacArgs = [
+                // enable these when cleaning up, disable them in CI to fail builds
+                // '-Awarns', // when enabled, treats errors as warnings
+                // '-Xmaxwarns', '10000',
+
+                // '-AonlyDefs=^com.kwawingu', // enabling this hides errors we care about
+                // '-AonlyUses=^com.kwawingu', // enabling this hides errors we care about
+                '-AskipDefs=.*AutoValue_\\w+\$',
+        ]
+    }
+}
+
 test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
