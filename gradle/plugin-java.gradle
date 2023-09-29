@@ -8,9 +8,9 @@ if (spotlessEnabled) {
         java {
             FileCollection files = files()
             for (SourceSet sourceSet : sourceSets)
-                files = files + sourceSet.allJava
+                files = files.plus(sourceSet.allJava)
             target files
-            removeUnusedImport()
+            removeUnusedImports()
             googleJavaFormat()
         }
         enforceCheck false
