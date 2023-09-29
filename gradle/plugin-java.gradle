@@ -49,6 +49,36 @@ if (checkerFrameworkEnabled) {
     }
 }
 
+def errorproneEnabled = Boolean.getBoolean('build.errorprone')
+if (errorproneEnabled) {
+    apply plugin: 'net.ltgt.errorprone'
+    dependencies {
+        errorprone libs.errorprone
+    }
+    tasks {
+        compileTestFixturesJava {
+            options.errorprone.enabled.set(false)
+        }
+        compileTestJava {
+            options.errorprone.enabled.set(false)
+        }
+        compileJava {
+            options.errorprone.disable("UnusedLabel", "LabelledBreakTarget") // labels often used as explanatory aids
+
+            // converting common warnings to errors here in the absence of a way to escalate all warnings to errors
+            options.errorprone.error(
+                    "StringCaseLocaleUsage",
+                    "AddressSelection"
+            )
+
+            // errorprone doesn't provide a way to escalate all warnings to errors
+            // setting this javac option works, but at the cost of ignoring the --continue
+            // flag we pass to gradle so as to continue to execute all other tasks before failing
+            // options.compilerArgs << "-Werror" // when enabled, all warnings are errors
+        }
+    }
+}
+
 test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
