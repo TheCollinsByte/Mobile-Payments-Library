@@ -6,7 +6,7 @@ if (spotlessEnabled) {
     apply plugin: "com.diffplug.spotless"
     spotless {
         java {
-            // TODO: License Header File
+            licenseHeaderFile rootProject.file("spotless/HEADER.java")
             FileCollection files = files()
             for (SourceSet sourceSet : sourceSets)
                 files = files.plus(sourceSet.allJava)
