@@ -9,10 +9,28 @@ if (spotlessEnabled) {
             FileCollection files = files()
             for (SourceSet sourceSet : sourceSets)
                 files = files.plus(sourceSet.allJava)
-            target files
+            target(files)
             removeUnusedImports()
             googleJavaFormat()
         }
         enforceCheck false
+    }
+}
+
+test {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+    testLogging {
+        events "started", "passed", "skipped", "failed"
+        if (Boolean.getBoolean("test.verbose")) {
+            // events "passed", "skipped", "failed"
+            showExceptions(true)
+            exceptionFormat("full")
+            showStandardStreams(true)
+        }
+        debug {
+            events "started", "passed", "skipped", "failed", "standard_out", "standard_error"
+            exceptionFormat "full"
+        }
     }
 }
