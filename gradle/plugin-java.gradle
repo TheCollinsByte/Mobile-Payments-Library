@@ -7,6 +7,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+dependencies {
+    // JUnit
+    testImplementation libs.junit.jupiter.api
+    testRuntimeOnly libs.junit.jupiter.engine
+}
+
 def spotlessEnabled = Boolean.getBoolean('enable.spotless')
 if (spotlessEnabled) {
     apply plugin: "com.diffplug.spotless"

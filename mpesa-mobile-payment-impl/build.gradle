@@ -10,7 +10,4 @@ dependencies {
     implementation project(':mobile-payment-api')
     implementation libs.slfj;
     implementation libs.gson;
-    // Use JUnit Jupiter for testing.
-    testImplementation libs.junit.jupiter.api
-    testImplementation libs.junit.jupiter.engine
 }
