@@ -84,7 +84,7 @@ public class SessionKey {
       handleSessionResponse(response);
       return extractSessionKey(response.body());
     } catch (IOException e) {
-      LOG.debug("Error Processing session response: {}", e.getMessage());
+      LOG.debug("Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
     }
 
     return Optional.empty();
