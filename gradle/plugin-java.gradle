@@ -2,6 +2,11 @@ apply plugin: 'java'
 apply plugin: 'java-library'
 apply plugin: 'java-test-fixtures'
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 def spotlessEnabled = Boolean.getBoolean('enable.spotless')
 if (spotlessEnabled) {
     apply plugin: "com.diffplug.spotless"
