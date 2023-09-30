@@ -1,7 +1,10 @@
+/*
+ * Copyright 2021-2023 KwaWingu.
+ */
 package com.kwawingu.payments;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,78 +13,72 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EncryptApiKeyTest {
-    private EncryptApiKey encryptApiKey;
-    private HttpClient httpClient;
-    private ApiEndpoint apiEndpoint;
+  private EncryptApiKey encryptApiKey;
+  private HttpClient httpClient;
+  private ApiEndpoint apiEndpoint;
 
-    @BeforeEach
-    public void setUp() {
-        String publicKey = System.getenv("MPESA_PUBLIC_KEY");
-        String apiKey = System.getenv("MPESA_API_KEY");
+  @BeforeEach
+  public void setUp() {
+    String publicKey = System.getenv("MPESA_PUBLIC_KEY");
+    String apiKey = System.getenv("MPESA_API_KEY");
 
-        if (publicKey == null || apiKey == null) {
-            throw new RuntimeException("Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
-        }
-
-        encryptApiKey = new EncryptApiKey(publicKey, apiKey);
-        httpClient = HttpClient.newHttpClient();
-        Market vodacomTZN = Market.VODACOM_TANZANIA;
-        Environment sandboxEnv = Environment.SANDBOX;
-        apiEndpoint = new ApiEndpoint(sandboxEnv, vodacomTZN);
+    if (publicKey == null || apiKey == null) {
+      throw new RuntimeException(
+          "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
     }
 
-    /**
-     * Apart from checking for Null, Needs to implement decryption logic to validate the session key.
-     */
-    @Test
-    public void testGetASessionKey() throws IOException, InterruptedException {
-        String encryptedSessionKey = encryptApiKey.generateAnEncryptApiKey();
-        assertNotNull(encryptedSessionKey);
+    encryptApiKey = new EncryptApiKey(publicKey, apiKey);
+    httpClient = HttpClient.newHttpClient();
+    Market vodacomTZN = Market.VODACOM_TANZANIA;
+    Environment sandboxEnv = Environment.SANDBOX;
+    apiEndpoint = new ApiEndpoint(sandboxEnv, vodacomTZN);
+  }
 
-        String context = apiEndpoint.getUrl(Service.GET_SESSION);
+  /**
+   * Apart from checking for Null, Needs to implement decryption logic to validate the session key.
+   */
+  @Test
+  public void testGetASessionKey() throws IOException, InterruptedException {
+    String encryptedSessionKey = encryptApiKey.generateAnEncryptApiKey();
+    assertNotNull(encryptedSessionKey);
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + encryptedSessionKey);
-        headers.put("Origin", "*");
+    String context = apiEndpoint.getUrl(Service.GET_SESSION);
 
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(context))
-                .GET();
-        headers.forEach(requestBuilder::headers);
-        HttpRequest request = requestBuilder.build();
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json");
+    headers.put("Authorization", "Bearer " + encryptedSessionKey);
+    headers.put("Origin", "*");
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(context)).GET();
+    headers.forEach(requestBuilder::headers);
+    HttpRequest request = requestBuilder.build();
 
-        if (response.statusCode() != 200 && response.statusCode() != 400) {
-            throw new IOException("Unexpected HTTP Code: " + response.statusCode());
-        }
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() == 200) {
-            String responseBody = response.body();
-            String[] apiResponse = responseBody.split(",");
-
-            assertEquals("{\"output_ResponseCode\":\"INS-0\"", apiResponse[0]);
-            assertEquals("\"output_ResponseDesc\":\"Request processed successfully\"", apiResponse[1]);
-        }
-
-        if (response.statusCode() == 400) {
-            throw new IOException("Session Creation Failed: " + response.statusCode());
-        }
+    if (response.statusCode() != 200 && response.statusCode() != 400) {
+      throw new IOException("Unexpected HTTP Code: " + response.statusCode());
     }
 
-    @Test
-    public void testInvalidPublicKey() {
+    if (response.statusCode() == 200) {
+      String responseBody = response.body();
+      String[] apiResponse = responseBody.split(",");
 
+      assertEquals("{\"output_ResponseCode\":\"INS-0\"", apiResponse[0]);
+      assertEquals("\"output_ResponseDesc\":\"Request processed successfully\"", apiResponse[1]);
     }
 
-    @Test
-    public void testInvalidApiKey() {
-
+    if (response.statusCode() == 400) {
+      throw new IOException("Session Creation Failed: " + response.statusCode());
     }
+  }
+
+  @Test
+  public void testInvalidPublicKey() {}
+
+  @Test
+  public void testInvalidApiKey() {}
 }
