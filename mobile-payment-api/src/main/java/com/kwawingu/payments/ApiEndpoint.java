@@ -1,5 +1,7 @@
 package com.kwawingu.payments;
 
+import java.util.Locale;
+
 public class ApiEndpoint {
     private final Environment environment;
     private final Market market;
@@ -12,7 +14,7 @@ public class ApiEndpoint {
     public String getUrl(Service service) {
         return (environment.isSsl() ? "https://" : "http://") +
                 environment.getHost() + "/" +
-                environment.getName().toLowerCase() +
+                environment.getName().toLowerCase(Locale.getDefault()) +
                 "/ipg/v2/" +
                 market.getContextValue() +
                 service.getPath();

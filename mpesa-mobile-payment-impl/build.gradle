@@ -1,10 +1,4 @@
-apply plugin: 'java-library'
 apply from: rootProject.file('gradle/plugin-java.gradle')
-
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
-}
 
 dependencies {
     implementation project(':mobile-payment-api')

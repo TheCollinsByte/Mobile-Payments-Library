@@ -1,2 +1,2 @@
-apply plugin: 'java-library'
 apply from: rootProject.file('gradle/plugin-java.gradle')
+
