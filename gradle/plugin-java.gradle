@@ -96,6 +96,17 @@ if (errorproneEnabled) {
     }
 }
 
+def owaspEnabled = Boolean.getBoolean('enable.owasp');
+if (owaspEnabled) {
+    apply plugin: 'org.owasp.dependencycheck'
+    dependencyCheck {
+        scanConfigurations = ["runtimeClasspath"];
+        format = 'ALL';
+        failOnError = true;
+        // suppressionFiles = [file("$rootProject.projectDir/gradle/cve-suppress.xml")]
+    }
+}
+
 test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
