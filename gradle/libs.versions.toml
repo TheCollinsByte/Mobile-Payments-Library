@@ -8,6 +8,7 @@ checkerframework-plugin = "0.6.32"
 errorprone = "2.21.1"
 errorprone-plugin = "3.1.0"
 owasp-dependencycheck-plugin = "8.4.0"
+logback = "1.4.11"
 
 [libraries]
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
@@ -18,6 +19,7 @@ checker = { module = "org.checkerframework:checker", version.ref = "checkerframe
 checker-qual = { module = "org.checkerframework:checker-qual", version.ref = "checkerframework" }
 errorprone = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone" }
 errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version.ref = "errorprone" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless-plugin" }
