@@ -4,4 +4,5 @@ dependencies {
     implementation project(':mobile-payment-api')
     implementation libs.slfj;
     implementation libs.gson;
+    implementation libs.logback.classic
 }
