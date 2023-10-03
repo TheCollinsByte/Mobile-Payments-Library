@@ -11,12 +11,18 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EncryptApiKeyTest {
+
+  private static final Logger LOG = LoggerFactory.getLogger(EncryptApiKeyTest.class);
+
   private EncryptApiKey encryptApiKey;
   private HttpClient httpClient;
   private ApiEndpoint apiEndpoint;
@@ -59,6 +65,8 @@ public class EncryptApiKeyTest {
 
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+    LOG.info(response.toString());
+
     if (response.statusCode() != 200 && response.statusCode() != 400) {
       throw new IOException("Unexpected HTTP Code: " + response.statusCode());
     }
@@ -66,6 +74,8 @@ public class EncryptApiKeyTest {
     if (response.statusCode() == 200) {
       String responseBody = response.body();
       String[] apiResponse = responseBody.split(",");
+
+      LOG.info(Arrays.toString(apiResponse));
 
       assertEquals("{\"output_ResponseCode\":\"INS-0\"", apiResponse[0]);
       assertEquals("\"output_ResponseDesc\":\"Request processed successfully\"", apiResponse[1]);

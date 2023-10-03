@@ -10,8 +10,12 @@ import java.io.IOException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SessionKeyTest {
+
+  private static final Logger LOG = LoggerFactory.getLogger(SessionKeyTest.class);
 
   private SessionKey mpesaSessionKey;
   private EncryptApiKey encryptApiKey;
@@ -26,6 +30,9 @@ public class SessionKeyTest {
       throw new RuntimeException(
           "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
     }
+
+    LOG.info(publicKey);
+    LOG.info(apiKey);
 
     mpesaSessionKey = new SessionKey();
     encryptApiKey = new EncryptApiKey(publicKey, apiKey);
