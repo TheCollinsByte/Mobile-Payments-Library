@@ -1,3 +1,4 @@
 rootProject.name = 'kwawingu-mobile-payments'
 include('mobile-payment-api')
 include('mpesa-mobile-payment-impl')
+include('mobile-payment-logback-config')
