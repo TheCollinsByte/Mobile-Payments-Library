@@ -19,6 +19,7 @@ dependencies {
 
     // Logback
     runtimeOnly libs.logback.classic
+    runtimeOnly project(':mobile-payment-logback-config')
 }
 
 def spotlessEnabled = Boolean.getBoolean('enable.spotless')
