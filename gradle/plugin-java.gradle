@@ -16,6 +16,9 @@ dependencies {
     // JUnit
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter.engine
+
+    // Logback
+    runtimeOnly libs.logback.classic
 }
 
 def spotlessEnabled = Boolean.getBoolean('enable.spotless')
