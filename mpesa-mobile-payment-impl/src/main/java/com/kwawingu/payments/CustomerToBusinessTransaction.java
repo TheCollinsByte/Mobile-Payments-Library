@@ -10,28 +10,40 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class CustomerToBusinessTransaction {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
-    private final String encryptedApiKey;
     private final HttpClient httpClient;
     private final ApiEndpoint apiEndpoint;
 
-    public CustomerToBusinessTransaction(EncryptApiKey encryptApiKey, ApiEndpoint apiEndpoint) {
-        this.encryptedApiKey = encryptApiKey.generateAnEncryptApiKey();
+    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint) {
         this.apiEndpoint = apiEndpoint;
         httpClient = HttpClient.newHttpClient();
     }
 
     public String initiatePayment() throws IOException, InterruptedException {
+        String publicKey = System.getenv("MPESA_PUBLIC_KEY");
+        String apiKey = System.getenv("MPESA_API_KEY");
+
+        if (publicKey == null || apiKey == null) {
+            throw new RuntimeException(
+                    "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
+        }
 
         String context = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
+        SessionKey sessionKey = new SessionKey();
+        EncryptApiKey encryptApiKey = new EncryptApiKey(publicKey, apiKey);
+        Optional<String> session = sessionKey.getSessionKey(encryptApiKey.generateAnEncryptApiKey(), context);
+        LOG.info("Encrypted API KEY: " + encryptApiKey.generateAnEncryptApiKey());
+        LOG.info("API Session: " + session.get());
+
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + encryptedApiKey);
+        headers.put("Authorization", "Bearer " + session.get());
         headers.put("Origin", "*");
 
         String jsonPayload = "{\n" +
