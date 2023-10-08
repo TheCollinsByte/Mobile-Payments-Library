@@ -12,22 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CustomerToBusinessTransactionTest {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
-    private EncryptApiKey encryptApiKey;
-    private ApiEndpoint apiEndpoint;
     private CustomerToBusinessTransaction customerToBusinessTransaction;
 
     @BeforeEach
     public void setUp() {
-        String publicKey = System.getenv("MPESA_PUBLIC_KEY");
-        String apiKey = System.getenv("MPESA_API_KEY");
-
-        if (publicKey == null || apiKey == null) {
-            throw new RuntimeException(
-                    "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
-        }
-        encryptApiKey = new EncryptApiKey(publicKey, apiKey);
-        apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
-        customerToBusinessTransaction = new CustomerToBusinessTransaction(encryptApiKey, apiEndpoint);
+        ApiEndpoint apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
+        customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint);
     }
 
     @Test
