@@ -10,7 +10,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class CustomerToBusinessTransaction {
 
@@ -25,25 +24,11 @@ public class CustomerToBusinessTransaction {
     }
 
     public String initiatePayment() throws IOException, InterruptedException {
-        String publicKey = System.getenv("MPESA_PUBLIC_KEY");
-        String apiKey = System.getenv("MPESA_API_KEY");
-
-        if (publicKey == null || apiKey == null) {
-            throw new RuntimeException(
-                    "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
-        }
-
         String context = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
-        SessionKey sessionKey = new SessionKey();
-        EncryptApiKey encryptApiKey = new EncryptApiKey(publicKey, apiKey);
-        Optional<String> session = sessionKey.getSessionKey(encryptApiKey.generateAnEncryptApiKey(), context);
-        LOG.info("Encrypted API KEY: " + encryptApiKey.generateAnEncryptApiKey());
-        LOG.info("API Session: " + session.get());
-
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + session.get());
+        headers.put("Authorization", "Bearer " + " ");
         headers.put("Origin", "*");
 
         String jsonPayload = "{\n" +
@@ -53,7 +38,7 @@ public class CustomerToBusinessTransaction {
                 "    \"input_Currency\": \"TZS\",\n" +
                 "    \"input_ServiceProviderCode\": \"000000\",\n" +
                 "    \"input_TransactionReference\": \"T1234C\",\n" +
-                "    \"input_ThirdPartyConversationID\": \"asv02e5958774f7ba228d83d0d689761\",\n" +
+                "    \"input_ThirdPartyConversationID\": \"asv02e5958774f783d0d689761\",\n" +
                 "    \"input_PurchasedItemsDesc\": \"Library\"\n" +
                 "}";
 
