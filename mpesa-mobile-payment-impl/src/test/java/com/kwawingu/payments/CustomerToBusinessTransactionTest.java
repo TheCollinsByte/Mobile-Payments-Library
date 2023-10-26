@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CustomerToBusinessTransactionTest {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
@@ -16,8 +16,13 @@ public class CustomerToBusinessTransactionTest {
 
     @BeforeEach
     public void setUp() {
+        String sessionKey = System.getenv("MPESA-SESSION-KEY");
+        if (sessionKey == null) {
+            throw new RuntimeException(
+                    "Missing environment variables: MPESA_API_KEY");
+        }
         ApiEndpoint apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
-        customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint);
+        customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint, sessionKey);
     }
 
     @Test
@@ -25,7 +30,7 @@ public class CustomerToBusinessTransactionTest {
         String response = customerToBusinessTransaction.initiatePayment();
         LOG.info(response);
         assertNotNull(response);
-        assertTrue(response.isBlank());
+        assertFalse(response.isBlank());
     }
 
 }
