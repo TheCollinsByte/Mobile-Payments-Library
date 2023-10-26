@@ -45,7 +45,7 @@ public class SessionKeyTest {
   public void testClientGetSessionKey() {
     String context = apiEndpoint.getUrl(Service.GET_SESSION);
     String encryptApiKey = this.encryptApiKey.generateAnEncryptApiKey();
-    System.setProperty("MPESA-SESSION-KEY", encryptApiKey);
+    System.setProperty("MPESA-API-SESSION-KEY", encryptApiKey);
     assertNotNull(encryptApiKey);
 
     Optional<String> session = mpesaSessionKey.getSessionKey(encryptApiKey, context);

@@ -16,10 +16,10 @@ public class CustomerToBusinessTransactionTest {
 
     @BeforeEach
     public void setUp() {
-        String sessionKey = System.getenv("MPESA-SESSION-KEY");
+        String sessionKey = System.getenv("MPESA-API-SESSION-KEY");
         if (sessionKey == null) {
             throw new RuntimeException(
-                    "Missing environment variables: MPESA_API_KEY");
+                    "Missing environment variables: MPESA-API-SESSION-KEY");
         }
         ApiEndpoint apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
         customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint, sessionKey);
