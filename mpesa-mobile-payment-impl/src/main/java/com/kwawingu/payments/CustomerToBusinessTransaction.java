@@ -17,18 +17,21 @@ public class CustomerToBusinessTransaction {
 
     private final HttpClient httpClient;
     private final ApiEndpoint apiEndpoint;
+    private final String sessionKey;
 
-    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint) {
+    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint, String sessionKey) {
         this.apiEndpoint = apiEndpoint;
+        this.sessionKey = sessionKey;
         httpClient = HttpClient.newHttpClient();
     }
 
     public String initiatePayment() throws IOException, InterruptedException {
+        LOG.info("Customer To Business Transaction Session Key: {}", sessionKey);
         String context = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + " ");
+        headers.put("Authorization", "Bearer " + sessionKey);
         headers.put("Origin", "*");
 
         String jsonPayload = "{\n" +
