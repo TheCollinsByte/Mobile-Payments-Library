@@ -39,9 +39,7 @@ public class EncryptApiKeyTest {
 
     encryptApiKey = new EncryptApiKey(publicKey, apiKey);
     httpClient = HttpClient.newHttpClient();
-    Market vodacomTZN = Market.VODACOM_TANZANIA;
-    Environment sandboxEnv = Environment.SANDBOX;
-    apiEndpoint = new ApiEndpoint(sandboxEnv, vodacomTZN);
+    apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }
 
   /**
@@ -53,6 +51,7 @@ public class EncryptApiKeyTest {
     assertNotNull(encryptedSessionKey);
 
     String context = apiEndpoint.getUrl(Service.GET_SESSION);
+    LOG.info(context);
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
@@ -65,8 +64,6 @@ public class EncryptApiKeyTest {
 
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-    LOG.info(response.toString());
-
     if (response.statusCode() != 200 && response.statusCode() != 400) {
       throw new IOException("Unexpected HTTP Code: " + response.statusCode());
     }
@@ -74,9 +71,6 @@ public class EncryptApiKeyTest {
     if (response.statusCode() == 200) {
       String responseBody = response.body();
       String[] apiResponse = responseBody.split(",");
-
-      LOG.info(Arrays.toString(apiResponse));
-
       assertEquals("{\"output_ResponseCode\":\"INS-0\"", apiResponse[0]);
       assertEquals("\"output_ResponseDesc\":\"Request processed successfully\"", apiResponse[1]);
     }

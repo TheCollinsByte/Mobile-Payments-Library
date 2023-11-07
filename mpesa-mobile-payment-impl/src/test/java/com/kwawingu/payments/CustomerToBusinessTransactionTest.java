@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,9 +32,9 @@ public class CustomerToBusinessTransactionTest {
 
         String context = apiEndpoint.getUrl(Service.GET_SESSION);
         String anEncryptedApiKey = encryptApiKey.generateAnEncryptApiKey();
-
         LOG.info(context);
-        LOG.info(anEncryptedApiKey);
+
+        assertNotNull(anEncryptedApiKey);
 
         Optional<String> sessionKey = mpesasessionKey.getSessionKey(anEncryptedApiKey, context);
 
@@ -43,7 +44,11 @@ public class CustomerToBusinessTransactionTest {
     @Test
     public void testCustomerToBusinessPayment() throws IOException, InterruptedException {
         String response = customerToBusinessTransaction.initiatePayment();
-        LOG.info(response);
+        for (String s : response.split(",")) {
+            if (s.contains("output_ResponseDesc")){
+                LOG.info(s.trim());
+            }
+        }
         assertNotNull(response);
         assertFalse(response.isBlank());
     }

@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SessionKeyTest {
-
   private static final Logger LOG = LoggerFactory.getLogger(SessionKeyTest.class);
 
   private SessionKey mpesaSessionKey;
@@ -31,22 +30,18 @@ public class SessionKeyTest {
           "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
     }
 
-    LOG.info(publicKey);
-    LOG.info(apiKey);
-
     mpesaSessionKey = new SessionKey();
     encryptApiKey = new EncryptApiKey(publicKey, apiKey);
-    Market vodacomTZN = Market.VODACOM_TANZANIA;
-    Environment sandboxEnv = Environment.SANDBOX;
-    apiEndpoint = new ApiEndpoint(sandboxEnv, vodacomTZN);
+    apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }
 
   @Test
   public void testClientGetSessionKey() {
     String context = apiEndpoint.getUrl(Service.GET_SESSION);
-    String encryptApiKey = this.encryptApiKey.generateAnEncryptApiKey();
-    assertNotNull(encryptApiKey);
-    Optional<String> session = mpesaSessionKey.getSessionKey(encryptApiKey, context);
+    LOG.info(context);
+    String encryptedApiKey = encryptApiKey.generateAnEncryptApiKey();
+    assertNotNull(encryptedApiKey);
+    Optional<String> session = mpesaSessionKey.getSessionKey(encryptedApiKey, context);
     assertTrue(session.isPresent());
   }
 
