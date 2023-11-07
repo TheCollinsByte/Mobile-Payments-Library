@@ -18,10 +18,12 @@ public class CustomerToBusinessTransaction {
     private final HttpClient httpClient;
     private final ApiEndpoint apiEndpoint;
     private final String encryptedSessionKey;
+    private final Payload payload;
 
-    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint, String encryptedSessionKey) {
+    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint, String encryptedSessionKey, Payload payload) {
         this.apiEndpoint = apiEndpoint;
         this.encryptedSessionKey = encryptedSessionKey;
+        this.payload = payload;
         httpClient = HttpClient.newHttpClient();
     }
 
@@ -33,21 +35,10 @@ public class CustomerToBusinessTransaction {
         headers.put("Authorization", "Bearer " + encryptedSessionKey);
         headers.put("Origin", "*");
 
-        String jsonPayload = "{\n" +
-                "    \"input_Amount\": \"10.00\",\n" +
-                "    \"input_CustomerMSISDN\": \"000000000001\",\n" +
-                "    \"input_Country\": \"TZN\",\n" +
-                "    \"input_Currency\": \"TZS\",\n" +
-                "    \"input_ServiceProviderCode\": \"000000\",\n" +
-                "    \"input_TransactionReference\": \"T1234C\",\n" +
-                "    \"input_ThirdPartyConversationID\": \"asv02e5958774f783d0d689761\",\n" +
-                "    \"input_PurchasedItemsDesc\": \"Library\"\n" +
-                "}";
-
         HttpRequest.Builder requestBuilder = HttpRequest
                 .newBuilder()
                 .uri(URI.create(context))
-                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload));
+                .POST(HttpRequest.BodyPublishers.ofString(payload.toJsonString()));
 
         headers.forEach(requestBuilder::headers);
         HttpRequest request = requestBuilder.build();
@@ -57,4 +48,28 @@ public class CustomerToBusinessTransaction {
         return response.body();
     }
 
+    public static class Builder {
+        private ApiEndpoint apiEndpoint;
+        private String encryptedSessionKey;
+        private Payload payload;
+
+        public Builder setApiEndpoint(ApiEndpoint apiEndpoint) {
+            this.apiEndpoint = apiEndpoint;
+            return this;
+        }
+
+        public Builder setEncryptedSessionKey(String encryptedSessionKey) {
+            this.encryptedSessionKey = encryptedSessionKey;
+            return this;
+        }
+
+        public Builder setPayload(Payload payload) {
+            this.payload = payload;
+            return this;
+        }
+
+        public CustomerToBusinessTransaction build() {
+            return new CustomerToBusinessTransaction(apiEndpoint, encryptedSessionKey, payload);
+        }
+    }
 }
