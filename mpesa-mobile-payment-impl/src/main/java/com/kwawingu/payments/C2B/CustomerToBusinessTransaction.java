@@ -1,5 +1,7 @@
-package com.kwawingu.payments;
+package com.kwawingu.payments.C2B;
 
+import com.kwawingu.payments.ApiEndpoint;
+import com.kwawingu.payments.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
