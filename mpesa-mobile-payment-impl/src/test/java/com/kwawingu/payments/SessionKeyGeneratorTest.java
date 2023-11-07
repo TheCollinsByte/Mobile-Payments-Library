@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GenerateSessionKeyTest {
-  private static final Logger LOG = LoggerFactory.getLogger(GenerateSessionKeyTest.class);
+public class SessionKeyGeneratorTest {
+  private static final Logger LOG = LoggerFactory.getLogger(SessionKeyGeneratorTest.class);
 
-  private GenerateSessionKey mpesaGenerateSessionKey;
+  private SessionKeyGenerator mpesaSessionKeyGenerator;
   private EncryptApiKey encryptApiKey;
   private ApiEndpoint apiEndpoint;
 
@@ -29,7 +29,7 @@ public class GenerateSessionKeyTest {
           "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
     }
 
-    mpesaGenerateSessionKey = new GenerateSessionKey();
+    mpesaSessionKeyGenerator = new SessionKeyGenerator();
     encryptApiKey = new EncryptApiKey(publicKey, apiKey);
     apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }
@@ -40,8 +40,8 @@ public class GenerateSessionKeyTest {
     LOG.info(context);
     String encryptedApiKey = encryptApiKey.generateAnEncryptApiKey();
     assertNotNull(encryptedApiKey);
-    Optional<String> session = mpesaGenerateSessionKey.getSessionKey(encryptedApiKey, context);
-    assertTrue(session.isPresent());
+    String session = mpesaSessionKeyGenerator.getSessionKeyOrThrowUnchecked(encryptedApiKey, context);
+    assertNotNull(session);
   }
 
   @Test
