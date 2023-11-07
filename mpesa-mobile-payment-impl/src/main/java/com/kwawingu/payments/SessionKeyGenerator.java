@@ -13,7 +13,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
+import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,21 +61,30 @@ public class SessionKeyGenerator {
     }
   }
 
-  private Optional<String> extractSessionKey(String responseBody) {
+  private String extractSessionKey(String responseBody) throws SessionKeyUnavailableException {
     if (responseBody != null) {
       JsonElement jsonElement = JsonParser.parseString(responseBody);
 
       if (jsonElement.isJsonObject()) {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         if (jsonObject.has("output_SessionID")) {
-          return Optional.of(jsonObject.get("output_SessionID").getAsString());
+          return jsonObject.get("output_SessionID").getAsString();
         }
       }
     }
-    return Optional.empty();
+    throw new SessionKeyUnavailableException("No session key available in JSON response.");
   }
 
-  public Optional<String> getSessionKey(String encryptedApiKey, String context) {
+  public String getSessionKeyOrThrowUnchecked(String encryptedApiKey, String context) {
+    try {
+      return getSessionKeyOrThrow(encryptedApiKey, context);
+    } catch (SessionKeyUnavailableException e) {
+      LOG.debug("Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public String getSessionKeyOrThrow(String encryptedApiKey, String context) throws SessionKeyUnavailableException {
     HttpResponse<String> response;
 
     HttpRequest request = buildSessionRequest(encryptedApiKey, context);
@@ -84,9 +94,7 @@ public class SessionKeyGenerator {
       handleSessionResponse(response);
       return extractSessionKey(response.body());
     } catch (IOException e) {
-      LOG.debug("Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
+      throw new SessionKeyUnavailableException(e);
     }
-
-    return Optional.empty();
   }
 }
