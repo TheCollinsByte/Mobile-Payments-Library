@@ -17,13 +17,11 @@ public class CustomerToBusinessTransaction {
 
     private final HttpClient httpClient;
     private final ApiEndpoint apiEndpoint;
-    private final String sessionKey;
-    private final EncryptApiKey encryptApiKey;
+    private final String encryptedSessionKey;
 
-    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint, String sessionKey, EncryptApiKey encryptApiKey) {
+    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint, String encryptedSessionKey) {
         this.apiEndpoint = apiEndpoint;
-        this.sessionKey = sessionKey;
-        this.encryptApiKey = encryptApiKey;
+        this.encryptedSessionKey = encryptedSessionKey;
         httpClient = HttpClient.newHttpClient();
     }
 
@@ -32,7 +30,7 @@ public class CustomerToBusinessTransaction {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + encryptApiKey.generateAnEncryptSessionKey(sessionKey));
+        headers.put("Authorization", "Bearer " + encryptedSessionKey);
         headers.put("Origin", "*");
 
         String jsonPayload = "{\n" +

@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CustomerToBusinessTransactionTest {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
@@ -27,7 +27,7 @@ public class CustomerToBusinessTransactionTest {
         }
 
         ApiEndpoint apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
-        SessionKey mpesasessionKey = new SessionKey();
+        GenerateSessionKey sessionKey = new GenerateSessionKey();
         EncryptApiKey encryptApiKey = new EncryptApiKey(publicKey, apiKey);
 
         String context = apiEndpoint.getUrl(Service.GET_SESSION);
@@ -36,9 +36,10 @@ public class CustomerToBusinessTransactionTest {
 
         assertNotNull(anEncryptedApiKey);
 
-        Optional<String> sessionKey = mpesasessionKey.getSessionKey(anEncryptedApiKey, context);
-
-        customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint, sessionKey.orElse(null), encryptApiKey);
+        Optional<String> generatedSessionKey = sessionKey.getSessionKey(anEncryptedApiKey, context);
+        assertTrue(generatedSessionKey.isPresent());
+        String encryptedSessionKey = encryptApiKey.generateAnEncryptSessionKey(generatedSessionKey.orElse(null));
+        customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint, encryptedSessionKey);
     }
 
     @Test

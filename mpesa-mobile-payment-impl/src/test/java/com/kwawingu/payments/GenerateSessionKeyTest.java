@@ -6,17 +6,16 @@ package com.kwawingu.payments;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SessionKeyTest {
-  private static final Logger LOG = LoggerFactory.getLogger(SessionKeyTest.class);
+public class GenerateSessionKeyTest {
+  private static final Logger LOG = LoggerFactory.getLogger(GenerateSessionKeyTest.class);
 
-  private SessionKey mpesaSessionKey;
+  private GenerateSessionKey mpesaGenerateSessionKey;
   private EncryptApiKey encryptApiKey;
   private ApiEndpoint apiEndpoint;
 
@@ -30,7 +29,7 @@ public class SessionKeyTest {
           "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
     }
 
-    mpesaSessionKey = new SessionKey();
+    mpesaGenerateSessionKey = new GenerateSessionKey();
     encryptApiKey = new EncryptApiKey(publicKey, apiKey);
     apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }
@@ -41,7 +40,7 @@ public class SessionKeyTest {
     LOG.info(context);
     String encryptedApiKey = encryptApiKey.generateAnEncryptApiKey();
     assertNotNull(encryptedApiKey);
-    Optional<String> session = mpesaSessionKey.getSessionKey(encryptedApiKey, context);
+    Optional<String> session = mpesaGenerateSessionKey.getSessionKey(encryptedApiKey, context);
     assertTrue(session.isPresent());
   }
 

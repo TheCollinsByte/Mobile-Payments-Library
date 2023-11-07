@@ -17,13 +17,13 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SessionKey {
+public class GenerateSessionKey {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SessionKey.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GenerateSessionKey.class);
 
   private final HttpClient httpClient;
 
-  public SessionKey() {
+  public GenerateSessionKey() {
     httpClient = HttpClient.newHttpClient();
   }
 
