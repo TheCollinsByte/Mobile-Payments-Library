@@ -61,15 +61,20 @@ public class CustomerToBusinessTransactionTest {
                 .build();
     }
 
-    @Test
-    public void testCustomerToBusinessPayment() throws IOException, InterruptedException {
-        String response = customerToBusinessTransaction.initiatePayment();
+    private void printSanitizeResponse(String response) {
         for (String s : response.split(",")) {
             if (s.contains("output_ResponseDesc")){
                 LOG.info(s.trim());
             }
         }
         LOG.info(Arrays.stream(response.split(",")).toList().toString());
+    }
+
+    @Test
+    public void testPayment_wheInitiated_responseSucceed() throws IOException, InterruptedException {
+        String response = customerToBusinessTransaction.initiatePayment();
+        printSanitizeResponse(response);
+
         assertNotNull(response);
         assertFalse(response.isBlank());
     }
