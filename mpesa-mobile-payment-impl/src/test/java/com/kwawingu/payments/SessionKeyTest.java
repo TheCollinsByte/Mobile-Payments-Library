@@ -47,7 +47,6 @@ public class SessionKeyTest {
     String encryptApiKey = this.encryptApiKey.generateAnEncryptApiKey();
     assertNotNull(encryptApiKey);
     Optional<String> session = mpesaSessionKey.getSessionKey(encryptApiKey, context);
-    System.setProperty("MPESA-API-SESSION-KEY", session.orElse(""));
     assertTrue(session.isPresent());
   }
 
