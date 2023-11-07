@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,13 +17,27 @@ public class CustomerToBusinessTransactionTest {
 
     @BeforeEach
     public void setUp() {
-        String sessionKey = System.getenv("MPESA-API-SESSION-KEY");
-        if (sessionKey == null) {
+        String publicKey = System.getenv("MPESA_PUBLIC_KEY");
+        String apiKey = System.getenv("MPESA_API_KEY");
+
+        if (publicKey == null || apiKey == null) {
             throw new RuntimeException(
-                    "Missing environment variables: MPESA-API-SESSION-KEY");
+                    "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
         }
+
         ApiEndpoint apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
-        customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint, sessionKey);
+        SessionKey mpesasessionKey = new SessionKey();
+        EncryptApiKey encryptApiKey = new EncryptApiKey(publicKey, apiKey);
+
+        String context = apiEndpoint.getUrl(Service.GET_SESSION);
+        String anEncryptedApiKey = encryptApiKey.generateAnEncryptApiKey();
+
+        LOG.info(context);
+        LOG.info(anEncryptedApiKey);
+
+        Optional<String> sessionKey = mpesasessionKey.getSessionKey(anEncryptedApiKey, context);
+
+        customerToBusinessTransaction = new CustomerToBusinessTransaction(apiEndpoint, sessionKey.orElse(null), encryptApiKey);
     }
 
     @Test
