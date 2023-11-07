@@ -29,7 +29,7 @@ public class CustomerToBusinessTransaction {
         httpClient = HttpClient.newHttpClient();
     }
 
-    public String initiatePayment() throws IOException, InterruptedException {
+    public String synchronousPayment() throws IOException, InterruptedException {
         String context = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
 
         Map<String, String> headers = new HashMap<>();
