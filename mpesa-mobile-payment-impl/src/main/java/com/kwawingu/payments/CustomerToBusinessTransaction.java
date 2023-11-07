@@ -28,7 +28,6 @@ public class CustomerToBusinessTransaction {
     }
 
     public String initiatePayment() throws IOException, InterruptedException {
-        LOG.info("Customer To Business Transaction Session Key: {}", sessionKey);
         String context = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
 
         Map<String, String> headers = new HashMap<>();
