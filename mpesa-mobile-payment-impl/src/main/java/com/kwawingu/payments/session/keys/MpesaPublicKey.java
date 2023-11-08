@@ -8,6 +8,6 @@ public class MpesaPublicKey {
     }
 
     public String getPublicKey() {
-        return publicKey;
+        return System.getenv(publicKey);
     }
 }
