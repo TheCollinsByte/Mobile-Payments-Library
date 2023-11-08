@@ -2,6 +2,7 @@ package com.kwawingu.payments.c2b;
 
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Service;
+import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +20,10 @@ public class CustomerToBusinessTransaction {
 
     private final HttpClient httpClient;
     private final ApiEndpoint apiEndpoint;
-    private final String encryptedSessionKey;
+    private final MpesaEncryptedSessionKey encryptedSessionKey;
     private final Payload payload;
 
-    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint, String encryptedSessionKey, Payload payload) {
+    public CustomerToBusinessTransaction(ApiEndpoint apiEndpoint, MpesaEncryptedSessionKey encryptedSessionKey, Payload payload) {
         this.apiEndpoint = apiEndpoint;
         this.encryptedSessionKey = encryptedSessionKey;
         this.payload = payload;
@@ -34,8 +35,8 @@ public class CustomerToBusinessTransaction {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        headers.put("Authorization", "Bearer " + encryptedSessionKey);
         headers.put("Origin", "*");
+        encryptedSessionKey.insertAuthorizationHeader(headers);
 
         HttpRequest.Builder requestBuilder = HttpRequest
                 .newBuilder()
@@ -52,7 +53,7 @@ public class CustomerToBusinessTransaction {
 
     public static class Builder {
         private ApiEndpoint apiEndpoint;
-        private String encryptedSessionKey;
+        private MpesaEncryptedSessionKey encryptedSessionKey;
         private Payload payload;
 
         public Builder setApiEndpoint(ApiEndpoint apiEndpoint) {
@@ -60,7 +61,7 @@ public class CustomerToBusinessTransaction {
             return this;
         }
 
-        public Builder setEncryptedSessionKey(String encryptedSessionKey) {
+        public Builder setEncryptedSessionKey(MpesaEncryptedSessionKey encryptedSessionKey) {
             this.encryptedSessionKey = encryptedSessionKey;
             return this;
         }

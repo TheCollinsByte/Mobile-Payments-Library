@@ -10,18 +10,19 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class MpesaApiKey {
-    private final String apiKey;
+public class MpesaSessionKey {
 
-    public MpesaApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    private final String sessionKey;
+
+    public MpesaSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
-    public MpesaEncryptedApiKey encrypt(MpesaPublicKey publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public MpesaEncryptedSessionKey encrypt(MpesaPublicKey publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         PublicKey pubKey = publicKey.toRsaPublicKey();
         Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         rsaCipher.init(Cipher.ENCRYPT_MODE, pubKey);
-        byte[] encryptedBytes = rsaCipher.doFinal(apiKey.getBytes());
-        return new MpesaEncryptedApiKey(Base64.getEncoder().encodeToString(encryptedBytes));
+        byte[] encryptedBytes = rsaCipher.doFinal(sessionKey.getBytes());
+        return new MpesaEncryptedSessionKey(Base64.getEncoder().encodeToString(encryptedBytes));
     }
 }

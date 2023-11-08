@@ -11,24 +11,35 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.kwawingu.payments.session.Config;
+import com.kwawingu.payments.session.MpesaKeyProvider;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
+import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+
 public class EncryptApiKeyTest {
 
   private static final Logger LOG = LoggerFactory.getLogger(EncryptApiKeyTest.class);
 
-  private EncryptApiKey encryptApiKey;
   private HttpClient httpClient;
   private ApiEndpoint apiEndpoint;
+  private MpesaEncryptedApiKey mpesaEncryptedApiKey;
+  private MpesaKeyProvider mpesaKeyProvider;
 
   @BeforeEach
   public void setUp() {
@@ -36,8 +47,7 @@ public class EncryptApiKeyTest {
             .setMpesaApiKey("MPESA_API_KEY")
             .setMpesaPublicKey("MPESA_PUBLIC_KEY")
             .build();
-
-    encryptApiKey = new EncryptApiKey(new MpesaKeyProviderFromEnvironment(config));
+    mpesaKeyProvider = new MpesaKeyProviderFromEnvironment(config);
     httpClient = HttpClient.newHttpClient();
     apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }
@@ -46,16 +56,15 @@ public class EncryptApiKeyTest {
    * Apart from checking for Null, Needs to implement decryption logic to validate the session key.
    */
   @Test
-  public void testGetASessionKey() throws IOException, InterruptedException {
-    String encryptedSessionKey = encryptApiKey.generateAnEncryptApiKey();
-    assertNotNull(encryptedSessionKey);
+  public void testGetASessionId() throws IOException, InterruptedException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+    MpesaEncryptedApiKey encryptedApiKey = mpesaKeyProvider.getApiKey().encrypt(mpesaKeyProvider.getPublicKey());
 
     String context = apiEndpoint.getUrl(Service.GET_SESSION);
     LOG.info(context);
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
-    headers.put("Authorization", "Bearer " + encryptedSessionKey);
+    encryptedApiKey.insertAuthorizationHeader(headers);
     headers.put("Origin", "*");
 
     HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(context)).GET();

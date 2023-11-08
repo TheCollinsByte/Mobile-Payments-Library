@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
+import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
+import com.kwawingu.payments.session.keys.MpesaSessionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,11 +30,11 @@ public class SessionKeyGenerator {
     httpClient = HttpClient.newHttpClient();
   }
 
-  private HttpRequest buildSessionRequest(String encryptedApiKey, String context) {
+  private HttpRequest buildSessionRequest(MpesaEncryptedApiKey encryptedApiKey, String context) {
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
-    headers.put("Authorization", "Bearer " + encryptedApiKey);
     headers.put("Origin", "*");
+    encryptedApiKey.insertAuthorizationHeader(headers);
 
     HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(context)).GET();
 
@@ -75,25 +77,28 @@ public class SessionKeyGenerator {
     throw new SessionKeyUnavailableException("No session key available in JSON response.");
   }
 
-  public String getSessionKeyOrThrowUnchecked(String encryptedApiKey, String context) {
+  public MpesaSessionKey getSessionKeyOrThrowUnchecked(MpesaEncryptedApiKey encryptedApiKey, String context) {
     try {
       return getSessionKeyOrThrow(encryptedApiKey, context);
     } catch (SessionKeyUnavailableException e) {
-      LOG.debug("Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
+      LOG.error("Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
       throw new IllegalStateException(e);
     }
   }
 
-  public String getSessionKeyOrThrow(String encryptedApiKey, String context) throws SessionKeyUnavailableException {
+  public MpesaSessionKey getSessionKeyOrThrow(MpesaEncryptedApiKey encryptedApiKey, String context) throws SessionKeyUnavailableException {
     HttpResponse<String> response;
 
     HttpRequest request = buildSessionRequest(encryptedApiKey, context);
     response = sendSessionRequest(request);
 
+    LOG.error("Response: {}", response);
+
     try {
       handleSessionResponse(response);
-      return extractSessionKey(response.body());
+      return new MpesaSessionKey(extractSessionKey(response.body()));
     } catch (IOException e) {
+      LOG.error("Session Key Generator: {}",encryptedApiKey.toString());
       throw new SessionKeyUnavailableException(e);
     }
   }

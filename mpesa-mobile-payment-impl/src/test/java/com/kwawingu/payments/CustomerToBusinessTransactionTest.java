@@ -4,6 +4,7 @@ import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
 import com.kwawingu.payments.c2b.Payload;
 import com.kwawingu.payments.session.Config;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
+import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import com.kwawingu.payments.session.keys.MpesaPublicKey;
 import com.kwawingu.payments.session.MpesaSession;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
@@ -11,7 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,6 +35,7 @@ public class CustomerToBusinessTransactionTest {
 
     private final MpesaSession session = new MpesaSession(new MpesaKeyProviderFromEnvironment(config), Environment.SANDBOX, Market.VODACOM_TANZANIA);
 
+
     private void printSanitizeResponse(String response) {
         for (String s : response.split(",")) {
             if (s.contains("output_ResponseDesc")){
@@ -38,7 +46,7 @@ public class CustomerToBusinessTransactionTest {
     }
 
     @Test
-    public void testPayment_wheInitiated_responseSucceed() throws IOException, InterruptedException, SessionKeyUnavailableException {
+    public void testPayment_wheInitiated_responseSucceed() throws IOException, InterruptedException, SessionKeyUnavailableException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         // Set-Up
         Payload payload = new Payload.Builder()
                 .setAmount("10.00")
