@@ -16,8 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.kwawingu.payments.session.Config;
-import com.kwawingu.payments.session.keys.MpesaApiKey;
-import com.kwawingu.payments.session.keys.MpesaPublicKey;
+import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -33,8 +32,12 @@ public class EncryptApiKeyTest {
 
   @BeforeEach
   public void setUp() {
-    Config config = new Config(new MpesaApiKey("MPESA_API_KEY"), new MpesaPublicKey("MPESA_PUBLIC_KEY"));
-    encryptApiKey = new EncryptApiKey(config);
+    Config config = new Config.Builder()
+            .setMpesaApiKey("MPESA_API_KEY")
+            .setMpesaPublicKey("MPESA_PUBLIC_KEY")
+            .build();
+
+    encryptApiKey = new EncryptApiKey(new MpesaKeyProviderFromEnvironment(config));
     httpClient = HttpClient.newHttpClient();
     apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }

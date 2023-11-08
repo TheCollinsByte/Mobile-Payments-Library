@@ -3,7 +3,6 @@ package com.kwawingu.payments;
 import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
 import com.kwawingu.payments.c2b.Payload;
 import com.kwawingu.payments.session.Config;
-import com.kwawingu.payments.session.keys.MpesaApiKey;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.keys.MpesaPublicKey;
 import com.kwawingu.payments.session.MpesaSession;
@@ -22,8 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CustomerToBusinessTransactionTest {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
 
-    private final Config config = new Config(new MpesaApiKey("MPESA_API_KEY"), new MpesaPublicKey("MPESA_PUBLIC_KEY"));
-    private final MpesaSession session = new MpesaSession(new MpesaKeyProviderFromEnvironment(config), Environment.SANDBOX, Market.VODACOM_TANZANIA, config);
+    private final Config config = new Config.Builder()
+            .setMpesaApiKey("MPESA_API_KEY")
+            .setMpesaPublicKey("MPESA_PUBLIC_KEY")
+            .build();
+
+    private final MpesaSession session = new MpesaSession(new MpesaKeyProviderFromEnvironment(config), Environment.SANDBOX, Market.VODACOM_TANZANIA);
 
     private void printSanitizeResponse(String response) {
         for (String s : response.split(",")) {

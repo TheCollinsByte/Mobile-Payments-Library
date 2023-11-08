@@ -10,11 +10,11 @@ public class MpesaKeyProviderFromEnvironment implements MpesaKeyProvider {
 
     @Override
     public String getApiKey() {
-        return System.getenv(config.getMpesaApiKey().getApiKey());
+        return System.getenv(config.getApiKeyEnvName());
     }
 
     @Override
     public String getPublicKey() {
-        return System.getenv(config.getMpesaPublicKey().getPublicKey());
+        return System.getenv(config.getPublicKeyEnvName());
     }
 }

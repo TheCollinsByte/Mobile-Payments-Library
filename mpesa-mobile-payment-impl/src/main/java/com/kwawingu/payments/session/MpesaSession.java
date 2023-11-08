@@ -18,10 +18,10 @@ public class MpesaSession  {
     private final SessionKeyGenerator sessionKeyGenerator;
     private final EncryptApiKey encryptApiKey;
 
-    public MpesaSession(MpesaKeyProvider mpesaKeyProvider, Environment environment, Market market, Config config) {
+    public MpesaSession(MpesaKeyProvider mpesaKeyProvider, Environment environment, Market market) {
         this.apiEndpoint = new ApiEndpoint(environment, market);
         this.sessionKeyGenerator = new SessionKeyGenerator();
-        this.encryptApiKey = new EncryptApiKey(config);
+        this.encryptApiKey = new EncryptApiKey(mpesaKeyProvider);
     }
 
     public String getEncryptedSessionKey() throws SessionKeyUnavailableException {

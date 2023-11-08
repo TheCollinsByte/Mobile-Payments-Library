@@ -6,8 +6,4 @@ public class MpesaApiKey {
     public MpesaApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
-
-    public String getApiKey() {
-        return System.getenv(apiKey);
-    }
 }

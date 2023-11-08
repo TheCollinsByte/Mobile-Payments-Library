@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Optional;
 
 import com.kwawingu.payments.session.Config;
-import com.kwawingu.payments.session.keys.MpesaApiKey;
+import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.keys.MpesaPublicKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,12 @@ public class SessionKeyGeneratorTest {
 
   @BeforeEach
   public void setUp() {
-    Config config = new Config(new MpesaApiKey("MPESA_API_KEY"), new MpesaPublicKey("MPESA_PUBLIC_KEY"));
+    Config config = new Config.Builder()
+            .setMpesaApiKey("MPESA_API_KEY")
+            .setMpesaPublicKey("MPESA_PUBLIC_KEY")
+            .build();
     mpesaSessionKeyGenerator = new SessionKeyGenerator();
-    encryptApiKey = new EncryptApiKey(config);
+    encryptApiKey = new EncryptApiKey(new MpesaKeyProviderFromEnvironment(config));
     apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }
 

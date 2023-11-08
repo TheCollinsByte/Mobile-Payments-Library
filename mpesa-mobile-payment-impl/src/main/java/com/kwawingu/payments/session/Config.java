@@ -1,22 +1,39 @@
 package com.kwawingu.payments.session;
 
-import com.kwawingu.payments.session.keys.MpesaApiKey;
-import com.kwawingu.payments.session.keys.MpesaPublicKey;
 
 public class Config {
-    private final MpesaApiKey mpesaApiKey;
-    private final MpesaPublicKey mpesaPublicKey;
+    private final String apiKeyEnvName;
+    private final String publicKeyEnvName;
 
-    public Config(MpesaApiKey mpesaApiKey, MpesaPublicKey mpesaPublicKey) {
-        this.mpesaApiKey = mpesaApiKey;
-        this.mpesaPublicKey = mpesaPublicKey;
+    private Config(Builder builder) {
+        this.apiKeyEnvName = builder.apiKeyEnvName;
+        this.publicKeyEnvName = builder.publicKeyEnvName;
     }
 
-    public MpesaApiKey getMpesaApiKey() {
-        return mpesaApiKey;
+    public String getApiKeyEnvName() {
+        return apiKeyEnvName;
     }
 
-    public MpesaPublicKey getMpesaPublicKey() {
-        return mpesaPublicKey;
+    public String getPublicKeyEnvName() {
+        return publicKeyEnvName;
+    }
+
+    public static class Builder {
+        private String apiKeyEnvName;
+        private String publicKeyEnvName;
+
+        public Builder setMpesaApiKey(String apiKeyEnvName) {
+            this.apiKeyEnvName = apiKeyEnvName;
+            return this;
+        }
+
+        public Builder setMpesaPublicKey(String publicKeyEnvName) {
+            this.publicKeyEnvName = publicKeyEnvName;
+            return this;
+        }
+
+        public Config build() {
+            return new Config(this);
+        }
     }
 }
