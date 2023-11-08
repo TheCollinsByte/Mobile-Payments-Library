@@ -32,7 +32,7 @@ public class MpesaSession  {
         LOG.info("URL: {}", contextUrl);
 
         String generatedSessionKey = sessionKeyGenerator.getSessionKeyOrThrow(anEncryptedApiKey, contextUrl);
-        return encryptApiKey.generateAnEncryptSessionKey(generatedSessionKey);
+        return encryptApiKey.generateAnEncryptedSessionKey(generatedSessionKey);
     }
 
 }
