@@ -18,10 +18,10 @@ public class MpesaSession  {
     private final SessionKeyGenerator sessionKeyGenerator;
     private final EncryptApiKey encryptApiKey;
 
-    public MpesaSession(MpesaKeyProvider mpesaKeyProvider, Environment environment, Market market) {
+    public MpesaSession(MpesaKeyProvider mpesaKeyProvider, Environment environment, Market market, Config config) {
         this.apiEndpoint = new ApiEndpoint(environment, market);
         this.sessionKeyGenerator = new SessionKeyGenerator();
-        this.encryptApiKey = new EncryptApiKey(mpesaKeyProvider.getPublicKey(), mpesaKeyProvider.getApiKey());
+        this.encryptApiKey = new EncryptApiKey(config);
     }
 
     public String getEncryptedSessionKey() throws SessionKeyUnavailableException {
@@ -32,7 +32,7 @@ public class MpesaSession  {
         LOG.info("URL: {}", contextUrl);
 
         String generatedSessionKey = sessionKeyGenerator.getSessionKeyOrThrow(anEncryptedApiKey, contextUrl);
-        return encryptApiKey.generateAnEncryptedSessionKey(generatedSessionKey);
+        return encryptApiKey.generateAnEncryptedSessionId(generatedSessionKey);
     }
 
 }
