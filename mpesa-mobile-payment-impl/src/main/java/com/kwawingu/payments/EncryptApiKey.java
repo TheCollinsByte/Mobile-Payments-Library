@@ -14,21 +14,22 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+
+import com.kwawingu.payments.session.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class EncryptApiKey {
   private static final Logger LOG = LoggerFactory.getLogger(EncryptApiKey.class);
-  private final String publicKey;
-  private final String apiKey;
 
-  public EncryptApiKey(String publicKey, String apiKey) {
-    this.publicKey = publicKey;
-    this.apiKey = apiKey;
+  private final Config config;
+
+  public EncryptApiKey(Config config) {
+    this.config = config;
   }
 
   private String encryptPublicKeyAsBase64(String apiKey) {
-    byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
+    byte[] publicKeyBytes = Base64.getDecoder().decode(config.getMpesaPublicKey().getPublicKey());
     try {
       PublicKey pubKey =
               KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
@@ -47,10 +48,10 @@ public class EncryptApiKey {
   }
 
   public String generateAnEncryptApiKey() {
-    return encryptPublicKeyAsBase64(apiKey);
+    return encryptPublicKeyAsBase64(config.getMpesaApiKey().getApiKey());
   }
 
-  public String generateAnEncryptedSessionKey(String session) {
+  public String generateAnEncryptedSessionId(String session) {
     return encryptPublicKeyAsBase64(session);
   }
 }
