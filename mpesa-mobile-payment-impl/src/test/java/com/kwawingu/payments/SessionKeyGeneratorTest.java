@@ -40,8 +40,8 @@ public class SessionKeyGeneratorTest {
     LOG.info(context);
     String encryptedApiKey = encryptApiKey.generateAnEncryptApiKey();
     assertNotNull(encryptedApiKey);
-    String session = mpesaSessionKeyGenerator.getSessionKeyOrThrowUnchecked(encryptedApiKey, context);
-    assertNotNull(session);
+    String sessionKey = mpesaSessionKeyGenerator.getSessionKeyOrThrowUnchecked(encryptedApiKey, context);
+    assertNotNull(sessionKey);
   }
 
   @Test

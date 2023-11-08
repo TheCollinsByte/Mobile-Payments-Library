@@ -27,7 +27,7 @@ public class EncryptApiKey {
     this.apiKey = apiKey;
   }
 
-  private String encryptedSessionKey(String apiKey) {
+  private String encryptPublicKeyAsBase64(String apiKey) {
     byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
     try {
       PublicKey pubKey =
@@ -47,10 +47,10 @@ public class EncryptApiKey {
   }
 
   public String generateAnEncryptApiKey() {
-    return encryptedSessionKey(apiKey);
+    return encryptPublicKeyAsBase64(apiKey);
   }
 
   public String generateAnEncryptedSessionKey(String session) {
-    return encryptedSessionKey(session);
+    return encryptPublicKeyAsBase64(session);
   }
 }
