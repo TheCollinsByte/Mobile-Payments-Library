@@ -23,7 +23,7 @@ public class CustomerToBusinessTransactionTest {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
 
     private final Config config = new Config(new MpesaApiKey("MPESA_API_KEY"), new MpesaPublicKey("MPESA_PUBLIC_KEY"));
-    private final MpesaSession session = new MpesaSession(new MpesaKeyProviderFromEnvironment(config), Environment.SANDBOX, Market.VODACOM_TANZANIA);
+    private final MpesaSession session = new MpesaSession(new MpesaKeyProviderFromEnvironment(config), Environment.SANDBOX, Market.VODACOM_TANZANIA, config);
 
     private void printSanitizeResponse(String response) {
         for (String s : response.split(",")) {

@@ -14,6 +14,10 @@ import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.kwawingu.payments.session.Config;
+import com.kwawingu.payments.session.keys.MpesaApiKey;
+import com.kwawingu.payments.session.keys.MpesaPublicKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -29,15 +33,8 @@ public class EncryptApiKeyTest {
 
   @BeforeEach
   public void setUp() {
-    String publicKey = System.getenv("MPESA_PUBLIC_KEY");
-    String apiKey = System.getenv("MPESA_API_KEY");
-
-    if (publicKey == null || apiKey == null) {
-      throw new RuntimeException(
-          "Missing environment variables: MPESA_PUBLIC_KEY or MPESA_API_KEY");
-    }
-
-    encryptApiKey = new EncryptApiKey(publicKey, apiKey);
+    Config config = new Config(new MpesaApiKey("MPESA_API_KEY"), new MpesaPublicKey("MPESA_PUBLIC_KEY"));
+    encryptApiKey = new EncryptApiKey(config);
     httpClient = HttpClient.newHttpClient();
     apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
   }
@@ -79,10 +76,4 @@ public class EncryptApiKeyTest {
       throw new IOException("Session Creation Failed: " + response.statusCode());
     }
   }
-
-  @Test
-  public void testInvalidPublicKey() {}
-
-  @Test
-  public void testInvalidApiKey() {}
 }
