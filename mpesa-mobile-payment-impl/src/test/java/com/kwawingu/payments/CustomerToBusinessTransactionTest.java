@@ -1,9 +1,9 @@
 package com.kwawingu.payments;
 
-import com.kwawingu.payments.C2B.CustomerToBusinessTransaction;
-import com.kwawingu.payments.C2B.Payload;
-import com.kwawingu.payments.Session.MpesaKeyProviderFromEnvironment;
-import com.kwawingu.payments.Session.MpesaSession;
+import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
+import com.kwawingu.payments.c2b.Payload;
+import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
+import com.kwawingu.payments.session.MpesaSession;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

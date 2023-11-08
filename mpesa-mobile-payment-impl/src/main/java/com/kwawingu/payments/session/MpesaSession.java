@@ -1,4 +1,4 @@
-package com.kwawingu.payments.Session;
+package com.kwawingu.payments.session;
 
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.EncryptApiKey;

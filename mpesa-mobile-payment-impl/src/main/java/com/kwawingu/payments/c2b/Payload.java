@@ -1,4 +1,4 @@
-package com.kwawingu.payments.C2B;
+package com.kwawingu.payments.c2b;
 
 public class Payload {
     private final String amount;

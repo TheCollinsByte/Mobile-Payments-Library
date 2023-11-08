@@ -1,4 +1,4 @@
-package com.kwawingu.payments.Session;
+package com.kwawingu.payments.session;
 
 public interface MpesaKeyProvider {
     String getApiKey();

@@ -1,4 +1,4 @@
-package com.kwawingu.payments.C2B;
+package com.kwawingu.payments.c2b;
 
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Service;
