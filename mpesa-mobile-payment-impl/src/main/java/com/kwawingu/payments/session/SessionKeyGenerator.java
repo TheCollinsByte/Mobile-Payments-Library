@@ -6,6 +6,7 @@ package com.kwawingu.payments.session;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kwawingu.payments.client.MpesaHttpClient;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaSessionKey;
@@ -23,31 +24,10 @@ public class SessionKeyGenerator {
 
   private static final Logger LOG = LoggerFactory.getLogger(SessionKeyGenerator.class);
 
-  private final HttpClient httpClient;
+  private final MpesaHttpClient httpClient;
 
   public SessionKeyGenerator() {
-    httpClient = HttpClient.newHttpClient();
-  }
-
-  private HttpRequest buildSessionRequest(MpesaEncryptedApiKey encryptedApiKey, URI contextUri) {
-    Map<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/json");
-    headers.put("Origin", "*");
-    encryptedApiKey.insertAuthorizationHeader(headers);
-
-    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(contextUri).GET();
-
-    headers.forEach(requestBuilder::headers);
-
-    return requestBuilder.build();
-  }
-
-  private HttpResponse<String> sendSessionRequest(HttpRequest request) {
-    try {
-      return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    } catch (IOException | InterruptedException e) {
-      throw new RuntimeException(e);
-    }
+    httpClient = new MpesaHttpClient();
   }
 
   private void handleSessionResponse(HttpResponse<String> response) throws IOException {
@@ -89,10 +69,19 @@ public class SessionKeyGenerator {
 
   public MpesaSessionKey getSessionKeyOrThrow(MpesaEncryptedApiKey encryptedApiKey, URI contextUri)
       throws SessionKeyUnavailableException {
+
     HttpResponse<String> response;
 
-    HttpRequest request = buildSessionRequest(encryptedApiKey, contextUri);
-    response = sendSessionRequest(request);
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Content-Type", "application/json");
+    headers.put("Origin", "*");
+    encryptedApiKey.insertAuthorizationHeader(headers);
+
+    try {
+      response = httpClient.getRequest(headers, contextUri);
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
 
     try {
       handleSessionResponse(response);
