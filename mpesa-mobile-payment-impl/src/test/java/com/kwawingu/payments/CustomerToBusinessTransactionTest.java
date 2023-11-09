@@ -63,18 +63,18 @@ public class CustomerToBusinessTransactionTest {
     Payload payload =
         new Payload.Builder()
             .setAmount("10.00")
-            .setCustomerMSISDN("+255762578467")
-            .setCountry(Market.VODACOM_TANZANIA.getInputCountryValue())
-            .setCurrency(Market.VODACOM_TANZANIA.getInputCurrencyValue())
-            .setServiceProviderCode("000000")
-            .setTransactionReference("T1234C")
-            .setThirdPartyConversationID("asv02e5958774f783d0d689761")
+            .setCustomerMSISDN("")
+            .setCountry(Market.VODAFONE_GHANA.getInputCountryValue())
+            .setCurrency(Market.VODAFONE_GHANA.getInputCurrencyValue())
+            .setServiceProviderCode("")
+            .setTransactionReference("")
+            .setThirdPartyConversationID("")
             .setPurchasedItemsDesc("Handbag, Black shoes")
             .build();
 
     CustomerToBusinessTransaction customerToBusinessTransaction =
         new CustomerToBusinessTransaction.Builder()
-            .setApiEndpoint(new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA))
+            .setApiEndpoint(new ApiEndpoint(Environment.SANDBOX, Market.VODAFONE_GHANA))
             .setEncryptedSessionKey(session.getEncryptedSessionKey())
             .setPayload(payload)
             .build();
