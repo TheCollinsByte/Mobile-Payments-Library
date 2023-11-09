@@ -3,6 +3,8 @@
  */
 package com.kwawingu.payments;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
 
 public class ApiEndpoint {
@@ -14,13 +16,13 @@ public class ApiEndpoint {
     this.market = market;
   }
 
-  public String getUrl(Service service) {
-    return (environment.isSsl() ? "https://" : "http://")
+  public URI getUrl(Service service) throws URISyntaxException {
+    return new URI((environment.isSsl() ? "https://" : "http://")
         + environment.getHost()
         + "/"
         + environment.getName().toLowerCase(Locale.getDefault())
         + "/ipg/v2/"
         + market.getContextValue()
-        + service.getPath();
+        + service.getPath());
   }
 }
