@@ -10,6 +10,7 @@ import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -63,15 +64,20 @@ public class EncryptApiKeyTest {
     MpesaEncryptedApiKey encryptedApiKey =
         mpesaKeyProvider.getApiKey().encrypt(mpesaKeyProvider.getPublicKey());
 
-    String context = apiEndpoint.getUrl(Service.GET_SESSION);
-    LOG.info(context);
+    URI context = null;
+    try {
+      context = apiEndpoint.getUrl(Service.GET_SESSION);
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+    LOG.info(String.valueOf(context));
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     encryptedApiKey.insertAuthorizationHeader(headers);
     headers.put("Origin", "*");
 
-    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(context)).GET();
+    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(context).GET();
     headers.forEach(requestBuilder::headers);
     HttpRequest request = requestBuilder.build();
 

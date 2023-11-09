@@ -29,13 +29,13 @@ public class SessionKeyGenerator {
     httpClient = HttpClient.newHttpClient();
   }
 
-  private HttpRequest buildSessionRequest(MpesaEncryptedApiKey encryptedApiKey, String context) {
+  private HttpRequest buildSessionRequest(MpesaEncryptedApiKey encryptedApiKey, URI contextUri) {
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     headers.put("Origin", "*");
     encryptedApiKey.insertAuthorizationHeader(headers);
 
-    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(URI.create(context)).GET();
+    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(contextUri).GET();
 
     headers.forEach(requestBuilder::headers);
 
@@ -77,9 +77,9 @@ public class SessionKeyGenerator {
   }
 
   public MpesaSessionKey getSessionKeyOrThrowUnchecked(
-      MpesaEncryptedApiKey encryptedApiKey, String context) {
+      MpesaEncryptedApiKey encryptedApiKey, URI contextUri) {
     try {
-      return getSessionKeyOrThrow(encryptedApiKey, context);
+      return getSessionKeyOrThrow(encryptedApiKey, contextUri);
     } catch (SessionKeyUnavailableException e) {
       LOG.error(
           "Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
@@ -87,11 +87,11 @@ public class SessionKeyGenerator {
     }
   }
 
-  public MpesaSessionKey getSessionKeyOrThrow(MpesaEncryptedApiKey encryptedApiKey, String context)
+  public MpesaSessionKey getSessionKeyOrThrow(MpesaEncryptedApiKey encryptedApiKey, URI contextUri)
       throws SessionKeyUnavailableException {
     HttpResponse<String> response;
 
-    HttpRequest request = buildSessionRequest(encryptedApiKey, context);
+    HttpRequest request = buildSessionRequest(encryptedApiKey, contextUri);
     response = sendSessionRequest(request);
 
     try {

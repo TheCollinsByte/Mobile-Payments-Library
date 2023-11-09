@@ -8,6 +8,7 @@ import com.kwawingu.payments.Service;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -35,7 +36,12 @@ public class CustomerToBusinessTransaction {
   }
 
   public String synchronousPayment() throws IOException, InterruptedException {
-    String context = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
+    URI contextUrl = null;
+    try {
+      contextUrl = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
@@ -44,7 +50,7 @@ public class CustomerToBusinessTransaction {
 
     HttpRequest.Builder requestBuilder =
         HttpRequest.newBuilder()
-            .uri(URI.create(context))
+            .uri(contextUrl)
             .POST(HttpRequest.BodyPublishers.ofString(payload.toJsonString()));
 
     headers.forEach(requestBuilder::headers);

@@ -10,6 +10,9 @@ import com.kwawingu.payments.Service;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -42,7 +45,12 @@ public class MpesaSession {
           BadPaddingException,
           InvalidKeyException {
 
-    String contextUrl = apiEndpoint.getUrl(Service.GET_SESSION);
+    URI contextUrl = null;
+    try {
+      contextUrl = apiEndpoint.getUrl(Service.GET_SESSION);
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
     MpesaEncryptedApiKey anEncryptedApiKey = null;
     try {
       anEncryptedApiKey = keyProvider.getApiKey().encrypt(keyProvider.getPublicKey());

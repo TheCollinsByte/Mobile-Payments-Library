@@ -10,6 +10,9 @@ import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.SessionKeyGenerator;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaSessionKey;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -43,8 +46,13 @@ public class SessionKeyGeneratorTest {
   @Test
   public void testClientGetSessionKey() {
 
-    String context = apiEndpoint.getUrl(Service.GET_SESSION);
-    LOG.info(context);
+    URI contextUri = null;
+    try {
+      contextUri = apiEndpoint.getUrl(Service.GET_SESSION);
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+    LOG.info(String.valueOf(contextUri));
 
     MpesaEncryptedApiKey encryptedApiKey = null;
 
@@ -62,7 +70,7 @@ public class SessionKeyGeneratorTest {
     assertNotNull(encryptedApiKey);
 
     MpesaSessionKey sessionKey =
-        mpesaSessionKeyGenerator.getSessionKeyOrThrowUnchecked(encryptedApiKey, context);
+        mpesaSessionKeyGenerator.getSessionKeyOrThrowUnchecked(encryptedApiKey, contextUri);
 
     assertNotNull(sessionKey);
   }

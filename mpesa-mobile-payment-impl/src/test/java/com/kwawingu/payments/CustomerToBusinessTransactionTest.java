@@ -12,6 +12,7 @@ import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.MpesaSession;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -50,7 +51,7 @@ public class CustomerToBusinessTransactionTest {
 
   @Test
   public void testPayment_wheInitiated_responseSucceed()
-      throws IOException,
+          throws IOException,
           InterruptedException,
           SessionKeyUnavailableException,
           NoSuchPaddingException,
@@ -58,7 +59,7 @@ public class CustomerToBusinessTransactionTest {
           NoSuchAlgorithmException,
           InvalidKeySpecException,
           BadPaddingException,
-          InvalidKeyException {
+          InvalidKeyException, URISyntaxException {
     // Set-Up
     Payload payload =
         new Payload.Builder()
