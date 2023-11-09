@@ -5,12 +5,10 @@ package com.kwawingu.payments.c2b;
 
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Service;
-import com.kwawingu.payments.client.Http;
+import com.kwawingu.payments.client.MpesaHttpClient;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
@@ -23,7 +21,7 @@ public class CustomerToBusinessTransaction {
   @SuppressWarnings("UnusedVariable")
   private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
-  private final Http httpClient;
+  private final MpesaHttpClient mpesaHttpClientClient;
   private final ApiEndpoint apiEndpoint;
   private final MpesaEncryptedSessionKey encryptedSessionKey;
   private final Payload payload;
@@ -34,7 +32,7 @@ public class CustomerToBusinessTransaction {
     this.encryptedSessionKey = encryptedSessionKey;
     this.payload = payload;
     try {
-      httpClient = new Http(apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
+      mpesaHttpClientClient = new MpesaHttpClient(apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
     } catch (URISyntaxException e) {
       throw new RuntimeException(e);
     }
@@ -47,7 +45,7 @@ public class CustomerToBusinessTransaction {
     headers.put("Origin", "*");
     encryptedSessionKey.insertAuthorizationHeader(headers);
 
-    HttpResponse<String> response = httpClient.postRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()));
+    HttpResponse<String> response = mpesaHttpClientClient.postRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()));
     return response.body();
   }
 

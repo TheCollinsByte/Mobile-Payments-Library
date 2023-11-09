@@ -1,6 +1,5 @@
 package com.kwawingu.payments.client;
 
-import com.kwawingu.payments.client.response.MpesaHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,12 +10,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
-public class Http {
-    private static final Logger LOG = LoggerFactory.getLogger(Http.class);
+public class MpesaHttpClient {
+    private static final Logger LOG = LoggerFactory.getLogger(MpesaHttpClient.class);
 
     private final HttpClient httpClient;
     private final URI uri;
-    public Http(URI uri) {
+    public MpesaHttpClient(URI uri) {
         this.httpClient = HttpClient.newHttpClient();
         this.uri = uri;
     }
