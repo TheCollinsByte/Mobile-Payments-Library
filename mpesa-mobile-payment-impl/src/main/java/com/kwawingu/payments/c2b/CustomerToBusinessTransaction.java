@@ -5,6 +5,7 @@ package com.kwawingu.payments.c2b;
 
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Service;
+import com.kwawingu.payments.client.Http;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import java.io.IOException;
 import java.net.URI;
@@ -22,7 +23,7 @@ public class CustomerToBusinessTransaction {
   @SuppressWarnings("UnusedVariable")
   private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
-  private final HttpClient httpClient;
+  private final Http httpClient;
   private final ApiEndpoint apiEndpoint;
   private final MpesaEncryptedSessionKey encryptedSessionKey;
   private final Payload payload;
@@ -32,32 +33,21 @@ public class CustomerToBusinessTransaction {
     this.apiEndpoint = apiEndpoint;
     this.encryptedSessionKey = encryptedSessionKey;
     this.payload = payload;
-    httpClient = HttpClient.newHttpClient();
-  }
-
-  public String synchronousPayment() throws IOException, InterruptedException {
-    URI contextUrl = null;
     try {
-      contextUrl = apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS);
+      httpClient = new Http(apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
     } catch (URISyntaxException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public String synchronousPayment() throws IOException, InterruptedException {
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
     headers.put("Origin", "*");
     encryptedSessionKey.insertAuthorizationHeader(headers);
 
-    HttpRequest.Builder requestBuilder =
-        HttpRequest.newBuilder()
-            .uri(contextUrl)
-            .POST(HttpRequest.BodyPublishers.ofString(payload.toJsonString()));
-
-    headers.forEach(requestBuilder::headers);
-    HttpRequest request = requestBuilder.build();
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
+    HttpResponse<String> response = httpClient.postRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()));
     return response.body();
   }
 
