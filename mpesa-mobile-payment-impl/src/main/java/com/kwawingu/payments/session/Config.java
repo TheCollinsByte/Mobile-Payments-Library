@@ -22,12 +22,12 @@ public class Config {
         private String apiKeyEnvName;
         private String publicKeyEnvName;
 
-        public Builder setMpesaApiKey(String apiKeyEnvName) {
+        public Builder setApiKeyEnvName(String apiKeyEnvName) {
             this.apiKeyEnvName = apiKeyEnvName;
             return this;
         }
 
-        public Builder setMpesaPublicKey(String publicKeyEnvName) {
+        public Builder setPublicKeyEnvName(String publicKeyEnvName) {
             this.publicKeyEnvName = publicKeyEnvName;
             return this;
         }

@@ -44,8 +44,8 @@ public class EncryptApiKeyTest {
   @BeforeEach
   public void setUp() {
     Config config = new Config.Builder()
-            .setMpesaApiKey("MPESA_API_KEY")
-            .setMpesaPublicKey("MPESA_PUBLIC_KEY")
+            .setApiKeyEnvName("MPESA_API_KEY")
+            .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
             .build();
     mpesaKeyProvider = new MpesaKeyProviderFromEnvironment(config);
     httpClient = HttpClient.newHttpClient();

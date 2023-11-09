@@ -36,8 +36,8 @@ public class SessionKeyGeneratorTest {
   @BeforeEach
   public void setUp() {
     Config config = new Config.Builder()
-            .setMpesaApiKey("MPESA_API_KEY")
-            .setMpesaPublicKey("MPESA_PUBLIC_KEY")
+            .setApiKeyEnvName("MPESA_API_KEY")
+            .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
             .build();
     mpesaSessionKeyGenerator = new SessionKeyGenerator();
     apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);

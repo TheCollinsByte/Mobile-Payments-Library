@@ -29,8 +29,8 @@ public class CustomerToBusinessTransactionTest {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
 
     private final Config config = new Config.Builder()
-            .setMpesaApiKey("MPESA_API_KEY")
-            .setMpesaPublicKey("MPESA_PUBLIC_KEY")
+            .setApiKeyEnvName("MPESA_API_KEY")
+            .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
             .build();
 
     private final MpesaSession session = new MpesaSession(new MpesaKeyProviderFromEnvironment(config), Environment.SANDBOX, Market.VODACOM_TANZANIA);

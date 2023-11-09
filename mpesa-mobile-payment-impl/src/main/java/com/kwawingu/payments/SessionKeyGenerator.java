@@ -92,13 +92,10 @@ public class SessionKeyGenerator {
     HttpRequest request = buildSessionRequest(encryptedApiKey, context);
     response = sendSessionRequest(request);
 
-    LOG.error("Response: {}", response);
-
     try {
       handleSessionResponse(response);
       return new MpesaSessionKey(extractSessionKey(response.body()));
     } catch (IOException e) {
-      LOG.error("Session Key Generator: {}",encryptedApiKey.toString());
       throw new SessionKeyUnavailableException(e);
     }
   }
