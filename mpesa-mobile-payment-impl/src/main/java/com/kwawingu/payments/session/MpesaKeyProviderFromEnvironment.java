@@ -6,6 +6,8 @@ package com.kwawingu.payments.session;
 import com.kwawingu.payments.session.keys.MpesaApiKey;
 import com.kwawingu.payments.session.keys.MpesaPublicKey;
 
+import java.util.Objects;
+
 public class MpesaKeyProviderFromEnvironment implements MpesaKeyProvider {
 
   public static class Config {
@@ -26,6 +28,7 @@ public class MpesaKeyProviderFromEnvironment implements MpesaKeyProvider {
       return publicKeyEnvName;
     }
 
+    @SuppressWarnings("initialization.field.uninitialized")
     public static class Builder {
       private String apiKeyEnvName;
       private String publicKeyEnvName;
@@ -41,6 +44,9 @@ public class MpesaKeyProviderFromEnvironment implements MpesaKeyProvider {
       }
 
       public Config build() {
+        Objects.requireNonNull(apiKeyEnvName, "API Key environment name cannot be null");
+        Objects.requireNonNull(publicKeyEnvName, "Public Key environment name cannot be null");
+
         return new Config(this);
       }
     }

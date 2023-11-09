@@ -13,6 +13,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +56,7 @@ public class CustomerToBusinessTransaction {
     return response.body();
   }
 
+  @SuppressWarnings("initialization.field.uninitialized")
   public static class Builder {
     private ApiEndpoint apiEndpoint;
     private MpesaEncryptedSessionKey encryptedSessionKey;
@@ -75,6 +78,10 @@ public class CustomerToBusinessTransaction {
     }
 
     public CustomerToBusinessTransaction build() {
+      Objects.requireNonNull(apiEndpoint, "API End-Point cannot be null");
+      Objects.requireNonNull(encryptedSessionKey, "An Encrypted Session Key cannot be null");
+      Objects.requireNonNull(payload, "Payload cannot be null");
+
       return new CustomerToBusinessTransaction(apiEndpoint, encryptedSessionKey, payload);
     }
   }

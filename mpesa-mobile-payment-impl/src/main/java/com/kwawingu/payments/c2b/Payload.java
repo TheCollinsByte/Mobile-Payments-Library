@@ -3,6 +3,8 @@
  */
 package com.kwawingu.payments.c2b;
 
+import java.util.Objects;
+
 public class Payload {
   private final String amount;
   private final String customerMSISDN;
@@ -24,40 +26,7 @@ public class Payload {
     this.purchasedItemsDesc = builder.purchasedItemsDesc;
   }
 
-  // Getters for the private fields
-  public String getAmount() {
-    return amount;
-  }
-
-  public String getCustomerMSISDN() {
-    return customerMSISDN;
-  }
-
-  public String getCountry() {
-    return country;
-  }
-
-  public String getCurrency() {
-    return currency;
-  }
-
-  public String getServiceProviderCode() {
-    return serviceProviderCode;
-  }
-
-  public String getTransactionReference() {
-    return transactionReference;
-  }
-
-  public String getThirdPartyConversationID() {
-    return thirdPartyConversationID;
-  }
-
-  public String getPurchasedItemsDesc() {
-    return purchasedItemsDesc;
-  }
-
-  // Builder class for Payload
+  @SuppressWarnings("initialization.field.uninitialized")
   public static class Builder {
     private String amount;
     private String customerMSISDN;
@@ -109,6 +78,14 @@ public class Payload {
     }
 
     public Payload build() {
+      Objects.requireNonNull(amount, "Transaction amount cannot be null");
+      Objects.requireNonNull(customerMSISDN, "Customer MSISDN cannot be null");
+      Objects.requireNonNull(country, "country cannot be null");
+      Objects.requireNonNull(currency, "currency cannot be null");
+      Objects.requireNonNull(serviceProviderCode, "Service Provider Code cannot be null");
+      Objects.requireNonNull(transactionReference, "Transaction Reference cannot be null");
+      Objects.requireNonNull(thirdPartyConversationID, "Third Party Conversation ID cannot be null");
+      Objects.requireNonNull(purchasedItemsDesc, "Purchased Item Description cannot be null");
       return new Payload(this);
     }
   }
