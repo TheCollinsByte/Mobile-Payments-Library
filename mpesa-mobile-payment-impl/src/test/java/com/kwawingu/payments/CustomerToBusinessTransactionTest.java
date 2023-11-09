@@ -63,12 +63,12 @@ public class CustomerToBusinessTransactionTest {
     Payload payload =
         new Payload.Builder()
             .setAmount("10.00")
-            .setCustomerMSISDN("")
+            .setCustomerMSISDN("254707161122")
             .setCountry(Market.VODAFONE_GHANA.getInputCountryValue())
             .setCurrency(Market.VODAFONE_GHANA.getInputCurrencyValue())
-            .setServiceProviderCode("")
-            .setTransactionReference("")
-            .setThirdPartyConversationID("")
+            .setServiceProviderCode("ORG001")
+            .setTransactionReference("T12344C")
+            .setThirdPartyConversationID("1e9b774d1da34af78412a498cbc28f5e")
             .setPurchasedItemsDesc("Handbag, Black shoes")
             .build();
 
