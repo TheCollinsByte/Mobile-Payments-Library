@@ -31,11 +31,7 @@ public class CustomerToBusinessTransaction {
     this.apiEndpoint = apiEndpoint;
     this.encryptedSessionKey = encryptedSessionKey;
     this.payload = payload;
-    try {
-      mpesaHttpClientClient = new MpesaHttpClient(apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
-    } catch (URISyntaxException e) {
-      throw new RuntimeException(e);
-    }
+    mpesaHttpClientClient = new MpesaHttpClient(apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
   }
 
   public String synchronousPayment() throws IOException, InterruptedException {

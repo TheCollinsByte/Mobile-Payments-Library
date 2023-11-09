@@ -64,12 +64,7 @@ public class EncryptApiKeyTest {
     MpesaEncryptedApiKey encryptedApiKey =
         mpesaKeyProvider.getApiKey().encrypt(mpesaKeyProvider.getPublicKey());
 
-    URI context = null;
-    try {
-      context = apiEndpoint.getUrl(Service.GET_SESSION);
-    } catch (URISyntaxException e) {
-      throw new RuntimeException(e);
-    }
+    URI context = apiEndpoint.getUrl(Service.GET_SESSION);
     LOG.info(String.valueOf(context));
 
     Map<String, String> headers = new HashMap<>();

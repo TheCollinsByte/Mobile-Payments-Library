@@ -46,11 +46,7 @@ public class MpesaSession {
           InvalidKeyException {
 
     URI contextUrl = null;
-    try {
-      contextUrl = apiEndpoint.getUrl(Service.GET_SESSION);
-    } catch (URISyntaxException e) {
-      throw new RuntimeException(e);
-    }
+    contextUrl = apiEndpoint.getUrl(Service.GET_SESSION);
     MpesaEncryptedApiKey anEncryptedApiKey = null;
     try {
       anEncryptedApiKey = keyProvider.getApiKey().encrypt(keyProvider.getPublicKey());

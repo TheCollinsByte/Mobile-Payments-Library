@@ -46,12 +46,7 @@ public class SessionKeyGeneratorTest {
   @Test
   public void testClientGetSessionKey() {
 
-    URI contextUri = null;
-    try {
-      contextUri = apiEndpoint.getUrl(Service.GET_SESSION);
-    } catch (URISyntaxException e) {
-      throw new RuntimeException(e);
-    }
+    URI contextUri = apiEndpoint.getUrl(Service.GET_SESSION);
     LOG.info(String.valueOf(contextUri));
 
     MpesaEncryptedApiKey encryptedApiKey = null;
