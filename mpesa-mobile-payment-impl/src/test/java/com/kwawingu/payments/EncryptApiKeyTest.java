@@ -14,11 +14,9 @@ import java.net.http.HttpResponse;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.kwawingu.payments.session.Config;
 import com.kwawingu.payments.session.MpesaKeyProvider;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
@@ -43,7 +41,7 @@ public class EncryptApiKeyTest {
 
   @BeforeEach
   public void setUp() {
-    Config config = new Config.Builder()
+    MpesaKeyProviderFromEnvironment.Config config = new MpesaKeyProviderFromEnvironment.Config.Builder()
             .setApiKeyEnvName("MPESA_API_KEY")
             .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
             .build();

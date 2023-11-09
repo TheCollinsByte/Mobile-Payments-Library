@@ -2,10 +2,7 @@ package com.kwawingu.payments;
 
 import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
 import com.kwawingu.payments.c2b.Payload;
-import com.kwawingu.payments.session.Config;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
-import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
-import com.kwawingu.payments.session.keys.MpesaPublicKey;
 import com.kwawingu.payments.session.MpesaSession;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import org.junit.jupiter.api.Test;
@@ -28,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CustomerToBusinessTransactionTest {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
 
-    private final Config config = new Config.Builder()
+    private final MpesaKeyProviderFromEnvironment.Config config = new MpesaKeyProviderFromEnvironment.Config.Builder()
             .setApiKeyEnvName("MPESA_API_KEY")
             .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
             .build();

@@ -9,13 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Optional;
 
-import com.kwawingu.payments.session.Config;
 import com.kwawingu.payments.session.MpesaKeyProvider;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
+import com.kwawingu.payments.session.SessionKeyGenerator;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
-import com.kwawingu.payments.session.keys.MpesaPublicKey;
 import com.kwawingu.payments.session.keys.MpesaSessionKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +33,7 @@ public class SessionKeyGeneratorTest {
 
   @BeforeEach
   public void setUp() {
-    Config config = new Config.Builder()
+    MpesaKeyProviderFromEnvironment.Config config = new MpesaKeyProviderFromEnvironment.Config.Builder()
             .setApiKeyEnvName("MPESA_API_KEY")
             .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
             .build();

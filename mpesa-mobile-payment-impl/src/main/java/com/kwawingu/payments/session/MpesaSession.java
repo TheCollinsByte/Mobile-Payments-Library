@@ -2,7 +2,6 @@ package com.kwawingu.payments.session;
 
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Environment;
-import com.kwawingu.payments.SessionKeyGenerator;
 import com.kwawingu.payments.Market;
 import com.kwawingu.payments.Service;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;

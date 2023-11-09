@@ -1,7 +1,7 @@
 /*
  * Copyright 2021-2023 KwaWingu.
  */
-package com.kwawingu.payments;
+package com.kwawingu.payments.session;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
