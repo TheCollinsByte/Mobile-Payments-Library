@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CustomerToBusinessTransaction {
-
+  @SuppressWarnings("UnusedVariable")
   private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
   private final HttpClient httpClient;

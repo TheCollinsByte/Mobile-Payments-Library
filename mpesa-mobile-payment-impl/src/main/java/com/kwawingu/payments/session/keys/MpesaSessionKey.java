@@ -3,6 +3,7 @@
  */
 package com.kwawingu.payments.session.keys;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -31,7 +32,7 @@ public class MpesaSessionKey {
     PublicKey pubKey = publicKey.toRsaPublicKey();
     Cipher rsaCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
     rsaCipher.init(Cipher.ENCRYPT_MODE, pubKey);
-    byte[] encryptedBytes = rsaCipher.doFinal(sessionKey.getBytes());
+    byte[] encryptedBytes = rsaCipher.doFinal(sessionKey.getBytes(StandardCharsets.UTF_8));
     return new MpesaEncryptedSessionKey(Base64.getEncoder().encodeToString(encryptedBytes));
   }
 }
