@@ -84,7 +84,8 @@ public class Payload {
       Objects.requireNonNull(currency, "currency cannot be null");
       Objects.requireNonNull(serviceProviderCode, "Service Provider Code cannot be null");
       Objects.requireNonNull(transactionReference, "Transaction Reference cannot be null");
-      Objects.requireNonNull(thirdPartyConversationID, "Third Party Conversation ID cannot be null");
+      Objects.requireNonNull(
+          thirdPartyConversationID, "Third Party Conversation ID cannot be null");
       Objects.requireNonNull(purchasedItemsDesc, "Purchased Item Description cannot be null");
       return new Payload(this);
     }
