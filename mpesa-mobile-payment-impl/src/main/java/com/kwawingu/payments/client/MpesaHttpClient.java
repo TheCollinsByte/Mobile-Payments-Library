@@ -14,13 +14,12 @@ public class MpesaHttpClient {
     private static final Logger LOG = LoggerFactory.getLogger(MpesaHttpClient.class);
 
     private final HttpClient httpClient;
-    private final URI uri;
-    public MpesaHttpClient(URI uri) {
+
+    public MpesaHttpClient() {
         this.httpClient = HttpClient.newHttpClient();
-        this.uri = uri;
     }
 
-    public HttpResponse<String> getRequest(Map<String, String> headers) throws IOException, InterruptedException {
+    public HttpResponse<String> getRequest(Map<String, String> headers, URI uri) throws IOException, InterruptedException {
         HttpRequest.Builder requestBuilder = HttpRequest
                 .newBuilder()
                 .uri(uri)
@@ -30,7 +29,7 @@ public class MpesaHttpClient {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public HttpResponse<String> postRequest(Map<String, String> headers, HttpRequest.BodyPublisher httpBody) throws IOException, InterruptedException {
+    public HttpResponse<String> postRequest(Map<String, String> headers, HttpRequest.BodyPublisher httpBody, URI uri) throws IOException, InterruptedException {
         HttpRequest.Builder requestBuilder = HttpRequest
                 .newBuilder()
                 .uri(uri)

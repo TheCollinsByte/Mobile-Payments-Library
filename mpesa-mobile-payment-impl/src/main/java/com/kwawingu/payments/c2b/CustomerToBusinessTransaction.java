@@ -31,7 +31,7 @@ public class CustomerToBusinessTransaction {
     this.apiEndpoint = apiEndpoint;
     this.encryptedSessionKey = encryptedSessionKey;
     this.payload = payload;
-    mpesaHttpClientClient = new MpesaHttpClient(apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
+    mpesaHttpClientClient = new MpesaHttpClient();
   }
 
   public String synchronousPayment() throws IOException, InterruptedException {
@@ -41,7 +41,7 @@ public class CustomerToBusinessTransaction {
     headers.put("Origin", "*");
     encryptedSessionKey.insertAuthorizationHeader(headers);
 
-    HttpResponse<String> response = mpesaHttpClientClient.postRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()));
+    HttpResponse<String> response = mpesaHttpClientClient.postRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()), apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
     return response.body();
   }
 
