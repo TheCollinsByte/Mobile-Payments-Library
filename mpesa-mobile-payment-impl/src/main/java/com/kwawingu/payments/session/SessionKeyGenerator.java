@@ -6,6 +6,9 @@ package com.kwawingu.payments.session;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kwawingu.payments.exception.SessionKeyUnavailableException;
+import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
+import com.kwawingu.payments.session.keys.MpesaSessionKey;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,10 +16,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.kwawingu.payments.exception.SessionKeyUnavailableException;
-import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
-import com.kwawingu.payments.session.keys.MpesaSessionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,16 +76,19 @@ public class SessionKeyGenerator {
     throw new SessionKeyUnavailableException("No session key available in JSON response.");
   }
 
-  public MpesaSessionKey getSessionKeyOrThrowUnchecked(MpesaEncryptedApiKey encryptedApiKey, String context) {
+  public MpesaSessionKey getSessionKeyOrThrowUnchecked(
+      MpesaEncryptedApiKey encryptedApiKey, String context) {
     try {
       return getSessionKeyOrThrow(encryptedApiKey, context);
     } catch (SessionKeyUnavailableException e) {
-      LOG.error("Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
+      LOG.error(
+          "Error Processing session response: {}", e.getMessage() == null ? "" : e.getMessage());
       throw new IllegalStateException(e);
     }
   }
 
-  public MpesaSessionKey getSessionKeyOrThrow(MpesaEncryptedApiKey encryptedApiKey, String context) throws SessionKeyUnavailableException {
+  public MpesaSessionKey getSessionKeyOrThrow(MpesaEncryptedApiKey encryptedApiKey, String context)
+      throws SessionKeyUnavailableException {
     HttpResponse<String> response;
 
     HttpRequest request = buildSessionRequest(encryptedApiKey, context);
