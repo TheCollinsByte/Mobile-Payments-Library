@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kwawingu.payments.client.MpesaHttpClient;
+import com.kwawingu.payments.client.response.GetSessionResponse;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaSessionKey;
@@ -30,8 +31,8 @@ public class SessionKeyGenerator {
     httpClient = new MpesaHttpClient();
   }
 
-  private void handleSessionResponse(HttpResponse<String> response) throws IOException {
-    int statusCode = response.statusCode();
+  private void handleSessionResponse(GetSessionResponse response) throws IOException {
+    int statusCode = response.getHttpStatusCode();
 
     if (statusCode != 200 && statusCode != 400) {
       throw new IOException("Unexpected HTTP Code" + statusCode);
@@ -42,16 +43,9 @@ public class SessionKeyGenerator {
     }
   }
 
-  private String extractSessionKey(String responseBody) throws SessionKeyUnavailableException {
-    if (responseBody != null) {
-      JsonElement jsonElement = JsonParser.parseString(responseBody);
-
-      if (jsonElement.isJsonObject()) {
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        if (jsonObject.has("output_SessionID")) {
-          return jsonObject.get("output_SessionID").getAsString();
-        }
-      }
+  private MpesaSessionKey extractSessionKey(GetSessionResponse response) throws SessionKeyUnavailableException {
+    if (response != null) {
+      return response.getOutput_SessionID();
     }
     throw new SessionKeyUnavailableException("No session key available in JSON response.");
   }
@@ -70,7 +64,7 @@ public class SessionKeyGenerator {
   public MpesaSessionKey getSessionKeyOrThrow(MpesaEncryptedApiKey encryptedApiKey, URI contextUri)
       throws SessionKeyUnavailableException {
 
-    HttpResponse<String> response;
+    GetSessionResponse sessionResponse;
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json");
@@ -78,14 +72,14 @@ public class SessionKeyGenerator {
     encryptedApiKey.insertAuthorizationHeader(headers);
 
     try {
-      response = httpClient.getRequest(headers, contextUri);
+      sessionResponse = httpClient.getSessionRequest(headers, contextUri);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
 
     try {
-      handleSessionResponse(response);
-      return new MpesaSessionKey(extractSessionKey(response.body()));
+      handleSessionResponse(sessionResponse);
+      return extractSessionKey(sessionResponse);
     } catch (IOException e) {
       throw new SessionKeyUnavailableException(e);
     }
