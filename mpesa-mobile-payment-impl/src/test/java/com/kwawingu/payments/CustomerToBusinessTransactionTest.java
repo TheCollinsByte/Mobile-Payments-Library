@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
-import com.kwawingu.payments.c2b.Payload;
+import com.kwawingu.payments.client.payload.Payload;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.MpesaSession;

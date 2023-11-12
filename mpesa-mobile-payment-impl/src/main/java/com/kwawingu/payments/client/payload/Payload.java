@@ -1,7 +1,7 @@
 /*
  * Copyright 2021-2023 KwaWingu.
  */
-package com.kwawingu.payments.c2b;
+package com.kwawingu.payments.client.payload;
 
 import java.util.Objects;
 
