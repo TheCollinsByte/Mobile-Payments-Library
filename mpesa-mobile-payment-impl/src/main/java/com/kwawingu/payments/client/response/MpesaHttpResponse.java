@@ -8,4 +8,12 @@ public abstract class MpesaHttpResponse {
         this.output_ResponseCode = outputResponseCode;
         this.output_ResponseDesc = output_ResponseDesc;
     }
+
+    public String getOutput_ResponseCode() {
+        return output_ResponseCode;
+    }
+
+    public String getOutput_ResponseDesc() {
+        return output_ResponseDesc;
+    }
 }
