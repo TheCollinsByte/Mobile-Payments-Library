@@ -3,10 +3,12 @@
  */
 package com.kwawingu.payments.c2b;
 
+import com.google.gson.JsonObject;
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Service;
 import com.kwawingu.payments.client.MpesaHttpClient;
 import com.kwawingu.payments.client.payload.Payload;
+import com.kwawingu.payments.client.response.CustomerToBusinessTransactionResponse;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import java.io.IOException;
 import java.net.http.HttpRequest;
@@ -41,8 +43,8 @@ public class CustomerToBusinessTransaction {
     headers.put("Origin", "*");
     encryptedSessionKey.insertAuthorizationHeader(headers);
 
-    HttpResponse<String> response = mpesaHttpClientClient.postRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()), apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
-    return response.body();
+    CustomerToBusinessTransactionResponse.SynchronousResponses response = mpesaHttpClientClient.customerToBusinessTransactionRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()), apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
+    return response.toJson();
   }
 
   @SuppressWarnings("initialization.field.uninitialized")
