@@ -12,13 +12,14 @@ import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+
+import com.kwawingu.payments.session.provider.MpesaKeyProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -5,14 +5,13 @@ package com.kwawingu.payments;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.kwawingu.payments.session.MpesaKeyProvider;
-import com.kwawingu.payments.session.MpesaKeyProviderFromEnvironment;
+import com.kwawingu.payments.session.provider.MpesaKeyProvider;
+import com.kwawingu.payments.session.provider.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.SessionKeyGenerator;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaSessionKey;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
