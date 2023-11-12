@@ -3,6 +3,7 @@ package com.kwawingu.payments.client;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kwawingu.payments.client.response.CustomerToBusinessTransactionResponse;
 import com.kwawingu.payments.client.response.GetSessionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 public class MpesaHttpClient {
+    @SuppressWarnings("UnusedVariable")
     private static final Logger LOG = LoggerFactory.getLogger(MpesaHttpClient.class);
 
     private final HttpClient httpClient;
@@ -45,13 +47,14 @@ public class MpesaHttpClient {
         return new GetSessionResponse(response.statusCode(), stringToJson(response.body()));
     }
 
-    public HttpResponse<String> postRequest(Map<String, String> headers, HttpRequest.BodyPublisher httpBody, URI uri) throws IOException, InterruptedException {
+    public CustomerToBusinessTransactionResponse.SynchronousResponses customerToBusinessTransactionRequest(Map<String, String> headers, HttpRequest.BodyPublisher httpBody, URI uri) throws IOException, InterruptedException {
         HttpRequest.Builder requestBuilder = HttpRequest
                 .newBuilder()
                 .uri(uri)
                 .POST(httpBody);
         headers.forEach(requestBuilder::headers);
         HttpRequest request = requestBuilder.build();
-        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return new CustomerToBusinessTransactionResponse.SynchronousResponses(response.statusCode(), stringToJson(response.body()));
     }
 }
