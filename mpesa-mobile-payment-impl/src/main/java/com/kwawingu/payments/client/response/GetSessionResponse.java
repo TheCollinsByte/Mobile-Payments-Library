@@ -8,22 +8,22 @@ import com.kwawingu.payments.session.keys.MpesaSessionKey;
 import java.net.http.HttpResponse;
 
 public class GetSessionResponse extends MpesaHttpResponse {
-    private MpesaSessionKey output_SessionID;
 
-    public GetSessionResponse(HttpResponse<String> response) {
-        JsonObject jsonObject = util(response.body());
+    private final MpesaSessionKey output_SessionID;
+
+    private final int httpStatusCode;
+
+    public GetSessionResponse(int statusCode, JsonObject jsonObject) {
         super(jsonObject.get("output_ResponseCode").getAsString(), jsonObject.get("output_ResponseDesc").getAsString());
         output_SessionID = new MpesaSessionKey(jsonObject.get("output_SessionID").getAsString());
+        httpStatusCode = statusCode;
     }
 
-    public JsonObject util(String response) {
-        try {
-            JsonElement jsonElement = JsonParser.parseString(response);
-            if (jsonElement.isJsonObject())
-                return jsonElement.getAsJsonObject();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-        return new JsonObject();
+    public MpesaSessionKey getOutput_SessionID() {
+        return output_SessionID;
+    }
+
+    public int getHttpStatusCode() {
+        return httpStatusCode;
     }
 }
