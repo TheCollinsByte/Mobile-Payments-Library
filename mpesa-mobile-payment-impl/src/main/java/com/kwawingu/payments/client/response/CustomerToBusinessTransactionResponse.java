@@ -41,7 +41,7 @@ public class CustomerToBusinessTransactionResponse {
     }
   }
 
-  public class AsynchronousResponses extends MpesaHttpResponse {
+  public static class AsynchronousResponses extends MpesaHttpResponse {
     @SuppressWarnings("UnusedVariable")
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
