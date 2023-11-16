@@ -18,13 +18,14 @@ public class ApiEndpoint {
 
   public URI getUrl(Service service) {
     try {
-      return new URI((environment.isSsl() ? "https://" : "http://")
-          + environment.getHost()
-          + "/"
-          + environment.getName().toLowerCase(Locale.getDefault())
-          + "/ipg/v2/"
-          + market.getContextValue()
-          + service.getPath());
+      return new URI(
+          (environment.isSsl() ? "https://" : "http://")
+              + environment.getHost()
+              + "/"
+              + environment.getName().toLowerCase(Locale.getDefault())
+              + "/ipg/v2/"
+              + market.getContextValue()
+              + service.getPath());
     } catch (URISyntaxException e) {
       throw new IllegalStateException(e);
     }

@@ -10,7 +10,7 @@ import com.kwawingu.payments.Service;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
-
+import com.kwawingu.payments.session.provider.MpesaKeyProvider;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -18,8 +18,6 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
-import com.kwawingu.payments.session.provider.MpesaKeyProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -3,9 +3,6 @@
  */
 package com.kwawingu.payments.session;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.kwawingu.payments.client.MpesaHttpClient;
 import com.kwawingu.payments.client.response.GetSessionResponse;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
@@ -13,9 +10,6 @@ import com.kwawingu.payments.session.keys.MpesaEncryptedApiKey;
 import com.kwawingu.payments.session.keys.MpesaSessionKey;
 import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -43,7 +37,8 @@ public class SessionKeyGenerator {
     }
   }
 
-  private MpesaSessionKey extractSessionKey(GetSessionResponse response) throws SessionKeyUnavailableException {
+  private MpesaSessionKey extractSessionKey(GetSessionResponse response)
+      throws SessionKeyUnavailableException {
     if (response != null) {
       return response.getOutput_SessionID();
     }

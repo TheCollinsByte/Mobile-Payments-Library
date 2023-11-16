@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
 import com.kwawingu.payments.client.payload.Payload;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
-import com.kwawingu.payments.session.provider.MpesaKeyProviderFromEnvironment;
 import com.kwawingu.payments.session.MpesaSession;
+import com.kwawingu.payments.session.provider.MpesaKeyProviderFromEnvironment;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -51,7 +51,7 @@ public class CustomerToBusinessTransactionTest {
 
   @Test
   public void testPayment_wheInitiated_responseSucceed()
-          throws IOException,
+      throws IOException,
           InterruptedException,
           SessionKeyUnavailableException,
           NoSuchPaddingException,
@@ -59,7 +59,8 @@ public class CustomerToBusinessTransactionTest {
           NoSuchAlgorithmException,
           InvalidKeySpecException,
           BadPaddingException,
-          InvalidKeyException, URISyntaxException {
+          InvalidKeyException,
+          URISyntaxException {
     // Set-Up
     Payload payload =
         new Payload.Builder()

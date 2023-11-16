@@ -3,7 +3,6 @@
  */
 package com.kwawingu.payments.c2b;
 
-import com.google.gson.JsonObject;
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Service;
 import com.kwawingu.payments.client.MpesaHttpClient;
@@ -12,7 +11,6 @@ import com.kwawingu.payments.client.response.CustomerToBusinessTransactionRespon
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import java.io.IOException;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +41,11 @@ public class CustomerToBusinessTransaction {
     headers.put("Origin", "*");
     encryptedSessionKey.insertAuthorizationHeader(headers);
 
-    CustomerToBusinessTransactionResponse.SynchronousResponses response = mpesaHttpClientClient.customerToBusinessTransactionRequest(headers, HttpRequest.BodyPublishers.ofString(payload.toJsonString()), apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
+    CustomerToBusinessTransactionResponse.SynchronousResponses response =
+        mpesaHttpClientClient.customerToBusinessTransactionRequest(
+            headers,
+            HttpRequest.BodyPublishers.ofString(payload.toJsonString()),
+            apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
     return response.toJson();
   }
 

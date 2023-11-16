@@ -6,10 +6,9 @@ package com.kwawingu.payments.session.provider;
 import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
 import com.kwawingu.payments.session.keys.MpesaApiKey;
 import com.kwawingu.payments.session.keys.MpesaPublicKey;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 public class MpesaKeyProviderFromEnvironment implements MpesaKeyProvider {
   @SuppressWarnings("UnusedVariable")
