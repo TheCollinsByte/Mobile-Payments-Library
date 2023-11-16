@@ -44,8 +44,7 @@ public class MpesaSession {
           BadPaddingException,
           InvalidKeyException {
 
-    URI contextUrl = null;
-    contextUrl = apiEndpoint.getUrl(Service.GET_SESSION);
+    URI contextUrl = apiEndpoint.getUrl(Service.GET_SESSION);
     MpesaEncryptedApiKey anEncryptedApiKey = null;
     try {
       anEncryptedApiKey = keyProvider.getApiKey().encrypt(keyProvider.getPublicKey());
