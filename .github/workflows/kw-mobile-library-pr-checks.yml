@@ -1,7 +1,7 @@
 name: kw-mobile-library-pr-checks
 run-name: kw-mobile-library-pr-checks
 on:
-  issue_commented:
+  issue_comment:
     types: [ created ]
 env:
   MPESA_PUBLIC_KEY: ${{ secret.MPESA_PUBLIC_KEY }}
