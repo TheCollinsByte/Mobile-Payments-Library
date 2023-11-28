@@ -7,7 +7,7 @@ env:
   MPESA_PUBLIC_KEY: ${{ secret.MPESA_PUBLIC_KEY }}
   MPESA_API_KEY: ${{ secret.MPESA_API_KEY }}
 jobs:
-  install:
+  install-and-cache-deps:
     runs-on: ubuntu-latest
     if: github.event.issue.pull_request && github.event.comment.body == '/test'
     timeout-minutes: 20
@@ -38,3 +38,30 @@ jobs:
         with:
           gradle-version: wrapper
           cache-read-only: false # by default, cache writes are allowed only by jobs on the default (main) branch
+  library-format-static-analysis-unit-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: install-and-cache-deps
+    if: github.event.issue.pull_request && github.event.comment.body == '/test'
+    steps:
+      - name: Get Pull Request (PR) Branch
+        uses: xt0rted/pull-request-comment-branch@v2
+        id: comment-branch
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Setup Gradle (with save/restore of Gradle cache)
+        # see: https://docs.gradle.org/current/userguide/github-actions.html
+        # see: https://github.com/gradle/gradle-build-action
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: wrapper
+          cache-read-only: false # by default, cache writes are allowed only by jobs on the default (main) branch
+      - name: Run Gradle targets for the Library tasks
+        run: |
+          ./scripts/ci/kw-mobile-lib-format-static-analysis-unit-test.sh
