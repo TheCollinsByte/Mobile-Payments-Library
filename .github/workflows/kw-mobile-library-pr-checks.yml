@@ -1,0 +1,40 @@
+name: kw-mobile-library-pr-checks
+run-name: kw-mobile-library-pr-checks
+on:
+  issue_commented:
+    types: [ created ]
+env:
+  MPESA_PUBLIC_KEY: ${{ secret.MPESA_PUBLIC_KEY }}
+  MPESA_API_KEY: ${{ secret.MPESA_API_KEY }}
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request && github.event.comment.body == '/test'
+    timeout-minutes: 20
+    steps:
+      - name: Get Pull Request (PR) Branch
+        uses: xt0rted/pull-request-comment-branch@v2
+        id: comment-branch
+      - name: Checkout Pull Request (PR) Branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ }}
+          fetch-depth: 0
+      - name: Require branch to be ahead of main
+        run: |
+          if ! git merge-base --is-ancestor origin/main ${{ steps.comment-branch.outputs.head_ref }};
+            then echo "This branch is not up to date with main";
+            exit 1;
+          fi
+      - uses: actions/setup-java@v3
+        if: steps.cacheHomedirCache.outputs.cache-hit != 'true'
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Setup Gradle (with save/restore of Gradle cache)
+        # see: https://docs.gradle.org/current/userguide/github-actions.html
+        # see: https://github.com/gradle/gradle-build-action
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: wrapper
+          cache-read-only: false # by default, cache writes are allowed only by jobs on the default (main) branch
