@@ -8,8 +8,8 @@ import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CustomerToBusinessTransactionResponse {
-  public static class SynchronousResponses extends MpesaHttpResponse {
+public interface CustomerToBusinessTransactionResponse {
+  public class SynchronousResponses extends MpesaHttpResponse {
     @SuppressWarnings("UnusedVariable")
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
@@ -41,7 +41,7 @@ public class CustomerToBusinessTransactionResponse {
     }
   }
 
-  public static class AsynchronousResponses extends MpesaHttpResponse {
+  public class AsynchronousResponses extends MpesaHttpResponse {
     @SuppressWarnings("UnusedVariable")
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
