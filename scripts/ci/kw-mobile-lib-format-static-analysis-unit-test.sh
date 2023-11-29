@@ -28,7 +28,7 @@ if [ $exitStatus -ne 0 ]; then
     exit $exitStatus
 fi
 
-./gradlew --profile --continue --parallel --max-workers=8 clean check "$@"
+./gradlew --profile --continue --parallel -Dtest.verbose=true --max-workers=8 clean check "$@"
 exitStatus=$?
 
 # Make unit test reports available for Github Actions to pickup
