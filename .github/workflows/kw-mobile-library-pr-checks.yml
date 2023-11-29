@@ -18,7 +18,7 @@ jobs:
       - name: Checkout Pull Request (PR) Branch
         uses: actions/checkout@v3
         with:
-          ref: ${{ }}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
           fetch-depth: 0
       - name: Require branch to be ahead of main
         run: |
