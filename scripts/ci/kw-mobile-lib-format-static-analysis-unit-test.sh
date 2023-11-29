@@ -23,7 +23,7 @@ fi
 exitStatus=$?
 if [ $exitStatus -ne 0 ]; then
     echo -e "\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    echo "One or more checkerframework violations found; fix to continue."
+    echo "One or more checker framework violations found; fix to continue."
     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     exit $exitStatus
 fi
