@@ -58,4 +58,6 @@ jobs:
           cache-read-only: false # by default, cache writes are allowed only by jobs on the default (main) branch
       - name: Run Gradle targets for the Library tasks
         run: |
+          export MPESA_PUBLIC_KEY: ${{ secrets.MPESA_PUBLIC_KEY }}
+          export MPESA_API_KEY: ${{ secrets.MPESA_API_KEY }}
           ./scripts/ci/kw-mobile-lib-format-static-analysis-unit-test.sh
