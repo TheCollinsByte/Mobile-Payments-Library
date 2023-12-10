@@ -56,8 +56,8 @@ jobs:
       - name: Setup Environment variables
         run: |
           touch ~/kw.sh
-          echo "export MPESA_PUBLIC_KEY=${{ secrets.MPESA_PUBLIC_KEY }}" >> ~/kw.sh
-          echo "export MPESA_API_KEY=${{ secrets.MPESA_API_KEY }}" >> ~/kw.sh
+          echo "export MPESA_PUBLIC_KEY = ${{ secrets.MPESA_PUBLIC_KEY }}" > ~/kw.sh
+          echo "export MPESA_API_KEY = ${{ secrets.MPESA_API_KEY }}" >> ~/kw.sh
           source ~/kw.sh
       - name: Run Gradle targets for the Library tasks
         run: |
