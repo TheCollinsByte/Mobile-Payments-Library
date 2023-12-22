@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
       - name: Setup Gradle (with save/restore of Gradle cache)
         # see: https://docs.gradle.org/current/userguide/github-actions.html
         # see: https://github.com/gradle/gradle-build-action
