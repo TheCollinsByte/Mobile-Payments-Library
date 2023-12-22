@@ -54,7 +54,7 @@ jobs:
           gradle-version: wrapper
           cache-read-only: false # by default, cache writes are allowed only by jobs on the default (main) branch
       - name: Run Gradle targets for the Library tasks
-        env:
+        with:
           MPESA_API_KEY: ${{ secrets.MPESA_API_KEY }}
           MPESA_PUBLIC_KEY: ${{ secrets.MPESA_PUBLIC_KEY }}
         run: |
