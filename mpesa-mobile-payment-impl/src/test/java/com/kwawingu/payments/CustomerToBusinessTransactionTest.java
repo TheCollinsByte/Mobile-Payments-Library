@@ -50,7 +50,7 @@ public class CustomerToBusinessTransactionTest {
   }
 
   @Test
-  public void testPayment_wheInitiated_responseSucceed()
+  public void testPayment_whenInitiated_responseSucceed()
       throws IOException,
           InterruptedException,
           SessionKeyUnavailableException,
