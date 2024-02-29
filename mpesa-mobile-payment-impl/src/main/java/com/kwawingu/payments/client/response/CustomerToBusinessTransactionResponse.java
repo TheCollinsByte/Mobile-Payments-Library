@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public interface CustomerToBusinessTransactionResponse {
-  public class SynchronousResponses extends MpesaHttpResponse {
+  class SynchronousResponses extends MpesaHttpResponse {
     @SuppressWarnings("UnusedVariable")
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
@@ -41,7 +41,7 @@ public interface CustomerToBusinessTransactionResponse {
     }
   }
 
-  public class AsynchronousResponses extends MpesaHttpResponse {
+  class AsynchronousResponses extends MpesaHttpResponse {
     @SuppressWarnings("UnusedVariable")
     private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
 
