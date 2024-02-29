@@ -6,3 +6,6 @@ build
 
 # Ignore a set of configuration for the project
 .idea
+
+# Ignore a set of environment variables
+.env
