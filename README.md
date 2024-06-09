@@ -2,6 +2,9 @@
 
 <h1><a href="https://github.com/TheOddagen/Mobile-Payments-Library">Mobile Payment Library</a></h1>
 
+<a href="https://github.com/TheOddagen/Mobile-Payments-Library/blob/main/LICENSE">
+<img alt="License" src="https://img.shields.io/github/license/TheOddagen/Mobile-Payments-Library?style=flat&color=eee&label="> </a>
+
 <a href="https://github.com/TheOddagen/Mobile-Payments-Library/graphs/contributors">
 <img alt="People" src="https://img.shields.io/github/contributors/TheOddagen/Mobile-Payments-Library?style=flat&color=ffaaf2&label=People"> </a>
 
