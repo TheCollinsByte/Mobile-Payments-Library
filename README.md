@@ -22,9 +22,10 @@
 
 ## Description
 
-Mobile Payment Library is an open-source project
+This is open-source mobile payment library with support for M-Pesa, Tigo Pesa, Airtel Money and Halopesa. It provides a simple and intuitive API for integrating mobile payments into your applications.
 
 - [Installation](#installation)
+- [Features](#features)
 - [Usage](#usage)
 - [Solution](#solution)
 - [Contributing](#contributing)
@@ -32,8 +33,35 @@ Mobile Payment Library is an open-source project
 - [Contact](#contact)
 
 
+## Features
+- Easy intergration with M-Pesa, Tigo Pesa, Airtel Money and Halopesa
+- Support to various payment methods
+- Extensible for other mobile payment providers
+- Detailed error handling and logging
+
 ## Installation
 
+### Gradle
+
+Add the following dependency to your `build.gradle` file:
+
+```groovy
+dependencies {
+    implementation 'com.kwawingu:mobile-payment:1.0.0'
+}
+```
+
+### Maven
+
+Add the following dependency to your `pom.xml` file:
+
+```groovy
+<dependency>
+    <groupId>com.kwawingu</groupId>
+    <artifactId>mobile-payment</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 
 ## Usage
 
