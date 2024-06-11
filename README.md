@@ -54,7 +54,7 @@ dependencies {
 
 Add the following dependency to your `pom.xml` file:
 
-```groovy
+```xml
 <dependency>
     <groupId>com.kwawingu</groupId>
     <artifactId>mobile-payment</artifactId>
@@ -66,11 +66,46 @@ Add the following dependency to your `pom.xml` file:
 
 ### Initialization
 
-First, Initialize the library 
+First, initialize the library with your M-Pesa credentials from environment variables.
 
 ```java
-
+MpesaKeyProviderFromEnvironment.Config config =
+        new MpesaKeyProviderFromEnvironment.Config.Builder()
+                .setApiKeyEnvName("MPESA_API_KEY")
+                .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
+                .build();
+mpesaSessionKeyGenerator = new SessionKeyGenerator();
+apiEndpoint = new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA);
+keyProvider = new MpesaKeyProviderFromEnvironment(config);
 ```
+
+This configuration sets up the MpesaKeyProviderFromEnvironment to retrieve the API key and public key from the specified environment variables. The SessionKeyGenerator and ApiEndpoint are also initialized for generating session keys and defining the API endpoint, respectively.
+
+### Customer To Business (C2B)
+
+The C2B API call is used as a standard customer-to-business transaction. Funds from the customer’s mobile money wallet will be deducted and be transferred to the mobile money wallet of the business. To authenticate and authorize this transaction, M-Pesa Payments Gateway will initiate a USSD Push message to the customer to gather and verify the mobile money PIN number. This number is not stored and is used only to authorize the transaction.
+
+```java
+Payload payload =
+        new Payload.Builder()
+                .setAmount("10.00")
+                .setCustomerMSISDN("+255-762-578-467")
+                .setCountry(Market.VODACOM_TANZANIA.getInputCountryValue())
+                .setCurrency(Market.VODACOM_TANZANIA.getInputCurrencyValue())
+                .setServiceProviderCode("ORG001")
+                .setTransactionReference("T12344C")
+                .setThirdPartyConversationID("1e9b774d1da34af78412a498cbc28f5e")
+                .setPurchasedItemsDesc("Lenovo ThinkPad X1 Carbon Gen 12")
+                .build();
+
+CustomerToBusinessTransaction customerToBusinessTransaction =
+        new CustomerToBusinessTransaction.Builder()
+                .setApiEndpoint(new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA))
+                .setEncryptedSessionKey(session.getEncryptedSessionKey())
+                .setPayload(payload)
+                .build();
+```
+
 
 ## Contributing
 
@@ -82,6 +117,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Your Name - [collo@fastmail.com](mailto:collo@fastmail.com)
+Collin - [collo@fastmail.com](mailto:collo@fastmail.com)
 
 Project Link: [https://github.com/TheOddagen/Mobile-Payments-Library](https://github.com/TheOddagen/Mobile-Payments-Library)
