@@ -27,14 +27,13 @@ This is open-source mobile payment library with support for M-Pesa, Tigo Pesa, A
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
-- [Solution](#solution)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 
 
 ## Features
-- Easy intergration with M-Pesa, Tigo Pesa, Airtel Money and Halopesa
+- Easy integration with Vodacom (M-Pesa), Tigo (Tigo Pesa), Airtel (Airtel Money), PesaPal, SelcomPay, AzamPay and Halotel (HaloPesa)
 - Support to various payment methods
 - Extensible for other mobile payment providers
 - Detailed error handling and logging
@@ -65,14 +64,24 @@ Add the following dependency to your `pom.xml` file:
 
 ## Usage
 
+### Initialization
 
-## Solution
+First, Initialize the library 
 
+```java
+
+```
 
 ## Contributing
 
+Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 ## License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
+
+Your Name - [collo@fastmail.com](mailto:collo@fastmail.com)
+
+Project Link: [https://github.com/TheOddagen/Mobile-Payments-Library](https://github.com/TheOddagen/Mobile-Payments-Library)
