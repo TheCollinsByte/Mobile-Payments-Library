@@ -72,3 +72,9 @@ Please follow these guidelines to maintain code consistency:
 
 5. **Review Process**: Your pull request will be reviewed by the project maintainers. Please be patient and address any feedback or requested changes.
 
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
+
+Thank you for your contributions and support!
