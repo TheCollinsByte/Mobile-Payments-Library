@@ -29,7 +29,6 @@ This is open-source mobile payment library with support for M-Pesa, Tigo Pesa, A
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
-- [Contact](#contact)
 
 
 ## Features
@@ -115,8 +114,14 @@ Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) fo
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
+<br/><br/>
 
-Collin - [collo@fastmail.com](mailto:collo@fastmail.com)
+<div align="center">
 
-Project Link: [https://github.com/TheOddagen/Mobile-Payments-Library](https://github.com/TheOddagen/Mobile-Payments-Library)
+<strong>⭐ hit the star button if you found this useful ⭐</strong><br>
+
+<a href="https://github.com/TheOddagen/Mobile-Payments-Library">Source</a>
+| <a href="https://x.com/TheOddagen" target="_blank">Twitter </a>
+| <a href="http://www.linkedin.com/in/collins-boniface" target="_blank">LinkedIn </a>
+| <a href="mailto:collo@fastmail.com">Email</a>
+</div>
