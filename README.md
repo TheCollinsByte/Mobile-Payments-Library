@@ -18,3 +18,33 @@
 <img alt="Last Updated" src="https://img.shields.io/github/last-commit/TheOddagen/Mobile-Payments-Library?style=flat&color=e06c75&label="> </a>
 
 </div>
+
+
+## Description
+
+Mobile Payment Library is an open-source project
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Solution](#solution)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+
+## Installation
+
+
+## Usage
+
+
+## Solution
+
+
+## Contributing
+
+
+## License
+
+
+## Contact
