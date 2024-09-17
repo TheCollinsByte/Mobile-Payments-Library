@@ -1,24 +1,24 @@
 <div align="center">
 
-<h1><a href="https://github.com/TheOddagen/Mobile-Payments-Library">Mobile Payment Library</a></h1>
+<h1><a href="https://github.com/TheCollinsByte/Mobile-Payments-Library">Mobile Payment Library</a></h1>
 
-<a href="https://github.com/TheOddagen/Mobile-Payments-Library/blob/main/LICENSE">
-<img alt="License" src="https://img.shields.io/github/license/TheOddagen/Mobile-Payments-Library?style=flat&color=eee&label="> </a>
+<a href="https://github.com/TheCollinsByte/Mobile-Payments-Library/blob/main/LICENSE">
+<img alt="License" src="https://img.shields.io/github/license/TheCollinsByte/Mobile-Payments-Library?style=flat&color=eee&label="> </a>
 
-<a href="https://github.com/TheOddagen/Mobile-Payments-Library/graphs/contributors">
-<img alt="People" src="https://img.shields.io/github/contributors/TheOddagen/Mobile-Payments-Library?style=flat&color=ffaaf2&label=People"> </a>
+<a href="https://github.com/TheCollinsByte/Mobile-Payments-Library/graphs/contributors">
+<img alt="People" src="https://img.shields.io/github/contributors/TheCollinsByte/Mobile-Payments-Library?style=flat&color=ffaaf2&label=People"> </a>
 
-<a href="https://github.com/TheOddagen/Mobile-Payments-Library/stargazers">
-<img alt="Stars" src="https://img.shields.io/github/stars/TheOddagen/Mobile-Payments-Library?style=flat&color=98c379&label=Stars"> </a>
+<a href="https://github.com/TheCollinsByte/Mobile-Payments-Library/stargazers">
+<img alt="Stars" src="https://img.shields.io/github/stars/TheCollinsByte/Mobile-Payments-Library?style=flat&color=98c379&label=Stars"> </a>
 
-<a href="https://github.com/TheOddagen/Mobile-Payments-Library/network/members">
-<img alt="Forks" src="https://img.shields.io/github/forks/TheOddagen/Mobile-Payments-Library?style=flat&color=66a8e0&label=Forks"> </a>
+<a href="https://github.com/TheCollinsByte/Mobile-Payments-Library/network/members">
+<img alt="Forks" src="https://img.shields.io/github/forks/TheCollinsByte/Mobile-Payments-Library?style=flat&color=66a8e0&label=Forks"> </a>
 
-<a href="https://github.com/TheOddagen/Mobile-Payments-Library/watchers">
-<img alt="Watches" src="https://img.shields.io/github/watchers/TheOddagen/Mobile-Payments-Library?style=flat&color=f5d08b&label=Watches"> </a>
+<a href="https://github.com/TheCollinsByte/Mobile-Payments-Library/watchers">
+<img alt="Watches" src="https://img.shields.io/github/watchers/TheCollinsByte/Mobile-Payments-Library?style=flat&color=f5d08b&label=Watches"> </a>
 
-<a href="https://github.com/TheOddagen/Mobile-Payments-Library/pulse">
-<img alt="Last Updated" src="https://img.shields.io/github/last-commit/TheOddagen/Mobile-Payments-Library?style=flat&color=e06c75&label="> </a>
+<a href="https://github.com/TheCollinsByte/Mobile-Payments-Library/pulse">
+<img alt="Last Updated" src="https://img.shields.io/github/last-commit/TheCollinsByte/Mobile-Payments-Library?style=flat&color=e06c75&label="> </a>
 
 </div>
 
@@ -123,8 +123,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <strong>⭐ hit the star button if you found this useful ⭐</strong><br>
 
-<a href="https://github.com/TheOddagen/Mobile-Payments-Library">Source</a>
-| <a href="https://x.com/TheOddagen" target="_blank">Twitter </a>
+<a href="https://github.com/TheCollinsByte/Mobile-Payments-Library">Source</a>
+| <a href="https://x.com/TheCollinsByte" target="_blank">Twitter </a>
 | <a href="http://www.linkedin.com/in/collins-boniface" target="_blank">LinkedIn </a>
 | <a href="mailto:collo@fastmail.com">Email</a>
 </div>
