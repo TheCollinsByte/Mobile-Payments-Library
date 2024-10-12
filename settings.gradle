@@ -2,3 +2,4 @@ rootProject.name = 'mobile-payments-library'
 include('mobile-payment-api')
 include('mpesa-mobile-payment-impl')
 include('mobile-payment-logback-config')
+inlclude('azampay-payment-impl')
