@@ -1,7 +1,7 @@
 apply from: rootProject.file('gradle/plugin-java.gradle')
 
 dependencies {
-    implementation project(':mpesa-payment-api')
+    implementation project(':kw-mpesa-payment-api')
     implementation libs.slfj;
     implementation libs.gson;
 }

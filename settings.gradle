@@ -1,8 +1,8 @@
 rootProject.name = 'mobile-payments-library'
 
 include('kw-mobile-payment-logback-config')
-include('mpesa-payment-api')
-include('mpesa-payment-impl')
+include('kw-mpesa-payment-api')
+include('kw-mpesa-payment-impl')
 include('azampay-payment-api')
 include('azampay-payment-impl')
 include('airtel-payment-api')
