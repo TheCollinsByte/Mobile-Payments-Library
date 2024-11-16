@@ -1,0 +1,7 @@
+apply from: rootProject.file('gradle/plugin-java.gradle')
+
+dependencies {
+    implementation project(':kw-tpesa-payment-api')
+    implementation libs.slfj;
+    implementation libs.gson;
+}
