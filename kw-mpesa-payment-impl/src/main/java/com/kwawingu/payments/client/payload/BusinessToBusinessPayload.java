@@ -89,7 +89,6 @@ public class BusinessToBusinessPayload {
         }
     }
 
-    // Convert the Payload object to JSON String
     public String toJsonString() {
         Gson gson = new Gson();
         return gson.toJson(this);
