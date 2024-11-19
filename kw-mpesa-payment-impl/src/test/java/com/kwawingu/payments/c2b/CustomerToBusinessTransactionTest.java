@@ -3,9 +3,6 @@
  */
 package com.kwawingu.payments.c2b;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Environment;
 import com.kwawingu.payments.Market;
@@ -13,59 +10,46 @@ import com.kwawingu.payments.client.payload.Payload;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.MpesaSession;
 import com.kwawingu.payments.session.provider.MpesaKeyProviderFromEnvironment;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CustomerToBusinessTransactionTest {
   private static final Logger LOG =
-      LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
+          LoggerFactory.getLogger(CustomerToBusinessTransactionTest.class);
 
-  private final MpesaKeyProviderFromEnvironment.Config config =
-      new MpesaKeyProviderFromEnvironment.Config.Builder()
-          .setApiKeyEnvName("MPESA_API_KEY")
-          .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
-          .build();
+  private CustomerToBusinessTransaction transaction;
 
-  private final MpesaSession session =
-      new MpesaSession(
-          new MpesaKeyProviderFromEnvironment(config),
-          Environment.SANDBOX,
-          Market.VODACOM_TANZANIA);
+  @BeforeEach
+  public void setUp()
+          throws NoSuchPaddingException, InvalidKeySpecException, NoSuchAlgorithmException,
+          IllegalBlockSizeException, BadPaddingException, InvalidKeyException, IOException,
+          SessionKeyUnavailableException, URISyntaxException {
+    MpesaKeyProviderFromEnvironment.Config config =
+            new MpesaKeyProviderFromEnvironment.Config.Builder()
+                    .setApiKeyEnvName("MPESA_API_KEY")
+                    .setPublicKeyEnvName("MPESA_PUBLIC_KEY")
+                    .build();
 
-  private void printSanitizeResponse(String response) {
-    for (String s : response.split(",")) {
-      if (s.contains("output_ResponseDesc")) {
-        LOG.info(s.trim());
-      }
-    }
-    LOG.info(Arrays.stream(response.split(",")).toList().toString());
-  }
+    MpesaSession session = new MpesaSession(
+            new MpesaKeyProviderFromEnvironment(config),
+            Environment.SANDBOX,
+            Market.VODACOM_TANZANIA
+    );
 
-  @Test
-  public void testPayment_whenInitiated_responseSucceed()
-      throws IOException,
-          InterruptedException,
-          SessionKeyUnavailableException,
-          NoSuchPaddingException,
-          IllegalBlockSizeException,
-          NoSuchAlgorithmException,
-          InvalidKeySpecException,
-          BadPaddingException,
-          InvalidKeyException,
-          URISyntaxException {
-    // Set-Up
-    Payload payload =
-        new Payload.Builder()
+    Payload payload = new Payload.Builder()
             .setAmount("10.00")
             .setCustomerMSISDN("+255 762578467")
             .setCountry(Market.VODACOM_TANZANIA.getInputCountryValue())
@@ -76,19 +60,32 @@ public class CustomerToBusinessTransactionTest {
             .setPurchasedItemsDesc("Handbag, Black shoes")
             .build();
 
-    CustomerToBusinessTransaction customerToBusinessTransaction =
-        new CustomerToBusinessTransaction.Builder()
+    transaction = new CustomerToBusinessTransaction.Builder()
             .setApiEndpoint(new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA))
             .setEncryptedSessionKey(session.getEncryptedSessionKey())
             .setPayload(payload)
             .build();
+  }
 
-    // Test
-    String response = customerToBusinessTransaction.synchronousPayment();
-    printSanitizeResponse(response);
+  @Test
+  public void testSynchronousPayment() {
+    try {
+      String response = transaction.synchronousPayment();
+      assertNotNull(response);
+      assertFalse(response.isBlank());
+      printSanitizeResponse(response);
+    } catch (IOException | InterruptedException e) {
+      LOG.error("Exception thrown during transaction: {}", e.getMessage());
+      fail("Exception thrown: " + e.getMessage());
+    }
+  }
 
-    // Assertion
-    assertNotNull(response);
-    assertFalse(response.isBlank());
+  private void printSanitizeResponse(String response) {
+    for (String s : response.split(",")) {
+      if (s.contains("output_ResponseDesc")) {
+        LOG.info(s.trim());
+      }
+    }
+    LOG.info(Arrays.stream(response.split(",")).toList().toString());
   }
 }
