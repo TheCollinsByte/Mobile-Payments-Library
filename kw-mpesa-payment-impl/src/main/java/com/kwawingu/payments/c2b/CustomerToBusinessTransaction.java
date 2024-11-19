@@ -6,7 +6,7 @@ package com.kwawingu.payments.c2b;
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Service;
 import com.kwawingu.payments.client.MpesaHttpClient;
-import com.kwawingu.payments.client.payload.Payload;
+import com.kwawingu.payments.client.payload.CustomerToBusinessPayload;
 import com.kwawingu.payments.client.response.CustomerToBusinessTransactionResponse;
 import com.kwawingu.payments.session.keys.MpesaEncryptedSessionKey;
 import java.io.IOException;
@@ -24,13 +24,13 @@ public class CustomerToBusinessTransaction {
   private final MpesaHttpClient mpesaHttpClientClient;
   private final ApiEndpoint apiEndpoint;
   private final MpesaEncryptedSessionKey encryptedSessionKey;
-  private final Payload payload;
+  private final CustomerToBusinessPayload customerToBusinessPayload;
 
   public CustomerToBusinessTransaction(
-      ApiEndpoint apiEndpoint, MpesaEncryptedSessionKey encryptedSessionKey, Payload payload) {
+      ApiEndpoint apiEndpoint, MpesaEncryptedSessionKey encryptedSessionKey, CustomerToBusinessPayload customerToBusinessPayload) {
     this.apiEndpoint = apiEndpoint;
     this.encryptedSessionKey = encryptedSessionKey;
-    this.payload = payload;
+    this.customerToBusinessPayload = customerToBusinessPayload;
     mpesaHttpClientClient = new MpesaHttpClient();
   }
 
@@ -44,7 +44,7 @@ public class CustomerToBusinessTransaction {
     CustomerToBusinessTransactionResponse.SynchronousResponses response =
         mpesaHttpClientClient.customerToBusinessTransactionRequest(
             headers,
-            HttpRequest.BodyPublishers.ofString(payload.toJsonString()),
+            HttpRequest.BodyPublishers.ofString(customerToBusinessPayload.toJsonString()),
             apiEndpoint.getUrl(Service.CUSTOMER_TO_BUSINESS));
     return response.toJson();
   }
@@ -53,7 +53,7 @@ public class CustomerToBusinessTransaction {
   public static class Builder {
     private ApiEndpoint apiEndpoint;
     private MpesaEncryptedSessionKey encryptedSessionKey;
-    private Payload payload;
+    private CustomerToBusinessPayload customerToBusinessPayload;
 
     public Builder setApiEndpoint(ApiEndpoint apiEndpoint) {
       this.apiEndpoint = apiEndpoint;
@@ -65,17 +65,17 @@ public class CustomerToBusinessTransaction {
       return this;
     }
 
-    public Builder setPayload(Payload payload) {
-      this.payload = payload;
+    public Builder setPayload(CustomerToBusinessPayload customerToBusinessPayload) {
+      this.customerToBusinessPayload = customerToBusinessPayload;
       return this;
     }
 
     public CustomerToBusinessTransaction build() {
       Objects.requireNonNull(apiEndpoint, "API End-Point cannot be null");
       Objects.requireNonNull(encryptedSessionKey, "An Encrypted Session Key cannot be null");
-      Objects.requireNonNull(payload, "Payload cannot be null");
+      Objects.requireNonNull(customerToBusinessPayload, "CustomerToBusinessPayload cannot be null");
 
-      return new CustomerToBusinessTransaction(apiEndpoint, encryptedSessionKey, payload);
+      return new CustomerToBusinessTransaction(apiEndpoint, encryptedSessionKey, customerToBusinessPayload);
     }
   }
 }
