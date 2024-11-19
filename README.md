@@ -88,7 +88,7 @@ This configuration sets up the MpesaKeyProviderFromEnvironment to retrieve the A
 The C2B API call is used as a standard customer-to-business transaction. Funds from the customer’s mobile money wallet will be deducted and be transferred to the mobile money wallet of the business. To authenticate and authorize this transaction, M-Pesa Payments Gateway will initiate a USSD Push message to the customer to gather and verify the mobile money PIN number. This number is not stored and is used only to authorize the transaction.
 
 ```java
-Payload payload =
+Payload customerToBusinessPayload =
         new Payload.Builder()
                 .setAmount("10.00")
                 .setCustomerMSISDN("+255-762-578-467")
@@ -104,7 +104,7 @@ CustomerToBusinessTransaction customerToBusinessTransaction =
         new CustomerToBusinessTransaction.Builder()
                 .setApiEndpoint(new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA))
                 .setEncryptedSessionKey(session.getEncryptedSessionKey())
-                .setPayload(payload)
+                .setPayload(customerToBusinessPayload)
                 .build();
 ```
 

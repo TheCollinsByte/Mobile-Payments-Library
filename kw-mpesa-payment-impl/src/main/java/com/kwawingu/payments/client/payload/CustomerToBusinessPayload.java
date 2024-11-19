@@ -5,7 +5,7 @@ package com.kwawingu.payments.client.payload;
 
 import java.util.Objects;
 
-public class Payload {
+public class CustomerToBusinessPayload {
   private final String amount;
   private final String customerMSISDN;
   private final String country;
@@ -15,7 +15,7 @@ public class Payload {
   private final String thirdPartyConversationID;
   private final String purchasedItemsDesc;
 
-  private Payload(Builder builder) {
+  private CustomerToBusinessPayload(Builder builder) {
     this.amount = builder.amount;
     this.customerMSISDN = builder.customerMSISDN;
     this.country = builder.country;
@@ -77,7 +77,7 @@ public class Payload {
       return this;
     }
 
-    public Payload build() {
+    public CustomerToBusinessPayload build() {
       Objects.requireNonNull(amount, "Transaction amount cannot be null");
       Objects.requireNonNull(customerMSISDN, "Customer MSISDN cannot be null");
       Objects.requireNonNull(country, "country cannot be null");
@@ -87,11 +87,11 @@ public class Payload {
       Objects.requireNonNull(
           thirdPartyConversationID, "Third Party Conversation ID cannot be null");
       Objects.requireNonNull(purchasedItemsDesc, "Purchased Item Description cannot be null");
-      return new Payload(this);
+      return new CustomerToBusinessPayload(this);
     }
   }
 
-  // Convert the Payload object to JSON String
+  // Convert the CustomerToBusinessPayload object to JSON String
   public String toJsonString() {
     return "{"
         + "\"input_Amount\": \""

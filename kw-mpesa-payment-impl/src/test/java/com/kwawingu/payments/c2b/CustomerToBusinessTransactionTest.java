@@ -6,7 +6,7 @@ package com.kwawingu.payments.c2b;
 import com.kwawingu.payments.ApiEndpoint;
 import com.kwawingu.payments.Environment;
 import com.kwawingu.payments.Market;
-import com.kwawingu.payments.client.payload.Payload;
+import com.kwawingu.payments.client.payload.CustomerToBusinessPayload;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.MpesaSession;
 import com.kwawingu.payments.session.provider.MpesaKeyProviderFromEnvironment;
@@ -49,7 +49,7 @@ public class CustomerToBusinessTransactionTest {
             Market.VODACOM_TANZANIA
     );
 
-    Payload payload = new Payload.Builder()
+    CustomerToBusinessPayload customerToBusinessPayload = new CustomerToBusinessPayload.Builder()
             .setAmount("10.00")
             .setCustomerMSISDN("+255 762578467")
             .setCountry(Market.VODACOM_TANZANIA.getInputCountryValue())
@@ -63,7 +63,7 @@ public class CustomerToBusinessTransactionTest {
     transaction = new CustomerToBusinessTransaction.Builder()
             .setApiEndpoint(new ApiEndpoint(Environment.SANDBOX, Market.VODACOM_TANZANIA))
             .setEncryptedSessionKey(session.getEncryptedSessionKey())
-            .setPayload(payload)
+            .setPayload(customerToBusinessPayload)
             .build();
   }
 
