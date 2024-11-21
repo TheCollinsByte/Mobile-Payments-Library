@@ -3,9 +3,7 @@
  */
 package com.kwawingu.payments.client;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.kwawingu.payments.client.response.CustomerToBusinessTransactionResponse;
 import com.kwawingu.payments.client.response.GetSessionResponse;
 import java.io.IOException;
@@ -22,19 +20,20 @@ public class MpesaHttpClient {
   private static final Logger LOG = LoggerFactory.getLogger(MpesaHttpClient.class);
 
   private final HttpClient httpClient;
+  private final Gson gson;
 
   public MpesaHttpClient() {
     this.httpClient = HttpClient.newHttpClient();
+    this.gson = new Gson();
   }
 
   public JsonObject stringToJson(String response) {
     try {
-      JsonElement jsonElement = JsonParser.parseString(response);
-      if (jsonElement.isJsonObject()) return jsonElement.getAsJsonObject();
-    } catch (Exception e) {
+      return gson.fromJson(response, JsonObject.class);
+    } catch (JsonParseException e) {
+      LOG.error("Failed to parse response to JSON", e);
       throw new IllegalStateException(e);
     }
-    return new JsonObject();
   }
 
   public GetSessionResponse getSessionRequest(Map<String, String> headers, URI uri)
