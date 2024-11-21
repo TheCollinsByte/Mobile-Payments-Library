@@ -4,15 +4,16 @@
 package com.kwawingu.payments.client.response;
 
 import com.google.gson.JsonObject;
-import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
+import com.google.gson.annotations.SerializedName;
 import com.kwawingu.payments.session.keys.MpesaSessionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GetSessionResponse extends MpesaHttpResponse {
   @SuppressWarnings("UnusedVariable")
-  private static final Logger LOG = LoggerFactory.getLogger(CustomerToBusinessTransaction.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GetSessionResponse.class);
 
+  @SerializedName("output_SessionID")
   private final MpesaSessionKey output_SessionID;
 
   private final int httpStatusCode;
