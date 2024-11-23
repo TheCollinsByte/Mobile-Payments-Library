@@ -4,6 +4,7 @@
 package com.kwawingu.payments.client;
 
 import com.google.gson.*;
+import com.kwawingu.payments.client.response.BusinessToBusinessTransactionResponse;
 import com.kwawingu.payments.client.response.CustomerToBusinessTransactionResponse;
 import com.kwawingu.payments.client.response.GetSessionResponse;
 import java.io.IOException;
@@ -36,24 +37,67 @@ public class MpesaHttpClient {
     }
   }
 
+  public <T> T sendGetRequest(Map<String, String> headers, URI uri, Class<T> responseType) throws IOException, InterruptedException {
+    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(uri).GET();
+    headers.forEach(requestBuilder::header);
+    HttpRequest request = requestBuilder.build();
+    HttpResponse<String> response = sendRequest(request);
+    return parseResponse(response, responseType);
+  }
+
+
+  public <T> T sendPostRequest(Map<String, String> headers,
+                               HttpRequest.BodyPublisher httpBody,
+                               URI uri,
+                               Class<T> responseType) throws IOException, InterruptedException {
+
+    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(uri).POST(httpBody);
+    headers.forEach(requestBuilder::header);
+    HttpRequest request = requestBuilder.build();
+    HttpResponse<String> response = sendRequest(request);
+    return parseResponse(response, responseType);
+  }
+
+
+  private HttpResponse<String> sendRequest(HttpRequest request) throws IOException, InterruptedException {
+    try {
+      return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (IOException | InterruptedException e) {
+      LOG.error("HTTP request failed", e);
+      throw e;
+    }
+  }
+
+  private <T> T parseResponse(HttpResponse<String> response, Class<T> responseType) throws IOException{
+    try {
+      if (response.statusCode() >= 200 && response.statusCode() < 300) {
+        return gson.fromJson(response.body(), responseType);
+      } else {
+        LOG.error("HTTP request failed with status code: {}", response.statusCode());
+        throw new IOException("Request failed with status code: " + response.statusCode());
+      }
+    } catch (JsonParseException e) {
+      LOG.error("Failed to parse response to {}", responseType.getSimpleName(), e);
+      throw new IOException("Failed to parse JSON response", e);
+    }
+  }
+
   public GetSessionResponse getSessionRequest(Map<String, String> headers, URI uri)
       throws IOException, InterruptedException {
-    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(uri).GET();
-    headers.forEach(requestBuilder::headers);
-    HttpRequest request = requestBuilder.build();
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    return new GetSessionResponse(response.statusCode(), stringToJson(response.body()));
+    return sendGetRequest(headers, uri, GetSessionResponse.class);
   }
 
   public CustomerToBusinessTransactionResponse.SynchronousResponses
       customerToBusinessTransactionRequest(
           Map<String, String> headers, HttpRequest.BodyPublisher httpBody, URI uri)
           throws IOException, InterruptedException {
-    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(uri).POST(httpBody);
-    headers.forEach(requestBuilder::headers);
-    HttpRequest request = requestBuilder.build();
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    return new CustomerToBusinessTransactionResponse.SynchronousResponses(
-        response.statusCode(), stringToJson(response.body()));
+    return sendPostRequest(headers, httpBody, uri, CustomerToBusinessTransactionResponse.SynchronousResponses.class);
+  }
+
+  public BusinessToBusinessTransactionResponse.SynchronousResponse businessToBusinessTransactionRequest(
+          Map<String, String> headers,
+          HttpRequest.BodyPublisher httpBody,
+          URI uri) throws IOException, InterruptedException {
+    return sendPostRequest(headers, httpBody, uri, BusinessToBusinessTransactionResponse.SynchronousResponse.class);
   }
 }
