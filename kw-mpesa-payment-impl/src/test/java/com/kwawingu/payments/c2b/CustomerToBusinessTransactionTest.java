@@ -1,12 +1,14 @@
 /*
  * Copyright 2021-2024 KwaWingu.
  */
-package com.kwawingu.payments;
+package com.kwawingu.payments.c2b;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.kwawingu.payments.c2b.CustomerToBusinessTransaction;
+import com.kwawingu.payments.ApiEndpoint;
+import com.kwawingu.payments.Environment;
+import com.kwawingu.payments.Market;
 import com.kwawingu.payments.client.payload.Payload;
 import com.kwawingu.payments.exception.SessionKeyUnavailableException;
 import com.kwawingu.payments.session.MpesaSession;
