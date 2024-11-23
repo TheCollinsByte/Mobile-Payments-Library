@@ -5,7 +5,8 @@ package com.kwawingu.payments;
 
 public enum Service {
   GET_SESSION("/getSession/"),
-  CUSTOMER_TO_BUSINESS("/c2bPayment/singleStage/");
+  CUSTOMER_TO_BUSINESS("/c2bPayment/singleStage/"),
+  BUSINESS_TO_BUSINESS("/b2bPayment/");
 
   private final String service;
 
