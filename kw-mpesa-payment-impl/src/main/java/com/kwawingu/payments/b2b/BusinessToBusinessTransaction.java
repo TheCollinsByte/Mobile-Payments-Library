@@ -72,7 +72,7 @@ public class BusinessToBusinessTransaction {
         public BusinessToBusinessTransaction build() {
             Objects.requireNonNull(apiEndpoint, "API End-Point cannot be null");
             Objects.requireNonNull(encryptedSessionKey, "An Encrypted Session Key cannot be null");
-            Objects.requireNonNull(payload, "Payload cannot be null");
+            Objects.requireNonNull(payload, "Business To Business Payload cannot be null");
 
             return new BusinessToBusinessTransaction(apiEndpoint, encryptedSessionKey, payload);
         }
